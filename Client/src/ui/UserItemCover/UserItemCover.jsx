@@ -1,6 +1,10 @@
 import styles from "./UserItemCover.module.css";
 
 const UserItemCover = (props) => {
+  const onRemoveUserHandler = () => {
+    props.onRemove(props.id);
+  };
+
   return (
     <>
       <div className={styles.itemCover}>
@@ -12,7 +16,9 @@ const UserItemCover = (props) => {
           <div className={styles.information}>
             <h3>{props.name}</h3>
             <h4 className={styles.description}>{props.id}</h4>
-            <button className={styles.removeBtn}>Remove</button>
+            <button className={styles.removeBtn} onClick={onRemoveUserHandler}>
+              Remove
+            </button>
           </div>
         </div>{" "}
       </div>

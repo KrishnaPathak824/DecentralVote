@@ -6,6 +6,8 @@ import { bouncy } from "ldrs";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
+
 const VotersList = (props) => {
   bouncy.register();
 
@@ -13,6 +15,10 @@ const VotersList = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { id } = useParams();
+
+  const onRemoveClicked = (removeId) => {
+    setVotersList(votersList.filter((item) => item.voterID !== removeId));
+  }
   
 
   const fetchData = async () => {
@@ -42,7 +48,13 @@ const VotersList = (props) => {
 
   if (votersList.length > 0) {
     content = votersList.map((item) => {
-      return <UserItemCover name={item.name} id={item.voterID} />;
+      return (
+        <UserItemCover
+          name={item.name}
+          id={item.voterID}
+          onRemove={onRemoveClicked}
+        />
+      );
     });
   }
 

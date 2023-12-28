@@ -7,7 +7,7 @@
   background-clip: text;
   position: relative;
   z-index: 2;
-  color: transparent;
+  color: #282c34;
 }
 
 .logoCover {
@@ -33,7 +33,11 @@
 }
 
 .navActions {
+  /* border: 1px solid red; */
+  position: relative;
+  right: 5%;
   display: flex;
-  justify-content: space-around;
-  flex: 30%;
+  align-items: center;
+  width: 30%;
+  flex: 0 0 auto;
 }

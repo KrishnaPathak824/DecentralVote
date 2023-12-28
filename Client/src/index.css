@@ -39,6 +39,8 @@ label {
 }
 
 a {
+  position: relative;
   text-decoration: none;
   color: inherit;
+  width: 100%;
 }

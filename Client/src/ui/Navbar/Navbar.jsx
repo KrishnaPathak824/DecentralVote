@@ -14,13 +14,19 @@ const Navbar = () => {
       </div>
 
       <div className={styles.navActions}>
-        <Link to ='/election-list'>
+        <Link to="/election-list">
           <p>My Elections</p>
         </Link>
 
-        <p>My Profile</p>
+        <Link to="/my-dashboard">
+          {" "}
+          <p>My Profile</p>
+        </Link>
+
         <p>
-          <Link to="/">Log Out</Link>
+          <Link to="/">
+            <p>Log Out</p>
+          </Link>
         </p>
       </div>
     </div>

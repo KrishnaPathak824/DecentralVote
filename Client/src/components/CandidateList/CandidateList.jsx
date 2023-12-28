@@ -13,25 +13,31 @@ const CandidateList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { id } = useParams();
+
+  const onRemoveClicked = (removeId) => {
+    setCandidateList(CandidateList.filter((item) => item.voterID !== removeId));
+  };
+
   const fetchData = async () => {
     setError(null);
     setIsLoading(true);
     try {
-      console.log('id', id);
-  
-      const response = await axios.get(`http://localhost:4000/candidate/getcandidate/${id}`, {
-        withCredentials: true,
-      });
-  
-      console.log('Response:', response.data);
+      console.log("id", id);
+
+      const response = await axios.get(
+        `http://localhost:4000/candidate/getcandidate/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("Response:", response.data);
       setCandidateList(response.data);
     } catch (error) {
-      console.error('Error fetching voter data:', error);
-      setError(error.message);  // or setError('Error fetching voter data');
+      console.error("Error fetching voter data:", error);
+      setError(error.message); // or setError('Error fetching voter data');
     }
     setIsLoading(false);
-
- 
   };
 
   useEffect(() => {
@@ -42,7 +48,13 @@ const CandidateList = () => {
 
   if (candidateList.length > 0) {
     content = candidateList.map((item) => {
-      return <UserItemCover name={item.name} id={item.voterID} />;
+      return (
+        <UserItemCover
+          name={item.name}
+          id={item.voterID}
+          onRemove={onRemoveClicked}
+        />
+      );
     });
   }
 
