@@ -4,6 +4,7 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 import PollOutlinedIcon from "@mui/icons-material/PollOutlined";
 import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
 import HowToVoteOutlinedIcon from "@mui/icons-material/HowToVoteOutlined";
+import { contractAbi, contractAddress } from './../../utils/constants';
 import { Link } from "react-router-dom";
 
 const VoterSidebar = (props) => {

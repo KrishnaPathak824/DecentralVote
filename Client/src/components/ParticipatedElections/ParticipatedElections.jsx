@@ -10,19 +10,48 @@ import axios from "axios";
 
 const ParticipatedElections = () => {
   bouncy.register();
-
+  const [elections, setElections] = useState([]);
   const [isLoading, setIsloading] = useState(false);
+  const [error, setError] = useState(null);
+  const fetchData = async () => {
+    setError(null);
+    setIsloading(true);
+
+    try {
+    
+      axios
+      .get("http://localhost:4000/election/getvoterselection", {
+        withCredentials: true,
+      })
+      .then((res) => {
+    
+        setElections(res.data.elections);
+        console.log('elections',elections)
+      })
+
+    } catch (error) {
+      setError(error.meesage);
+    }
+
+    setIsloading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+ 
 
   let content = <p>No Data Found</p>;
 
-  if (partElectionData.length > 0) {
-    content = partElectionData.map((item) => {
+  if (elections.length > 0) {
+    content = elections.map((item) => {
       return (
         <ParticipatedElectionItem
-          title={item.electionTitle}
-          organizer={item.electionOrganizer}
-          sDate={item.startDate}
-          eDate={item.endDate}
+          electionid = {item._id}
+          title={item.title}
+          organizer={item.organizer}
+          sDate={item.startdate}
+          eDate={item.enddate}
         />
       );
     });
