@@ -69,7 +69,7 @@ const AddCandidate = () => {
     <>
       <Navbar />
       <div className={styles.candidatePageCover}>
-        <Sidebar />
+        <Sidebar eid = {id}/>
         <div className={styles.pageContent}>
           <h2>Add Candidate</h2>
 

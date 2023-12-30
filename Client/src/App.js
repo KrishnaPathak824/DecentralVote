@@ -34,7 +34,7 @@ function App() {
       <Route path="/candidate-list/:id" element={<CandidateList />} />
       <Route path="/my-dashboard" element={<Profile />} />
       <Route path="/voter-election-page" element={<VoterElectionPage />} />
-      <Route path="/voting-page" element={<VotingPage />} />
+      <Route path="/voting-page/:id" element={<VotingPage />} />
       <Route path="/results-page" element={<Results />} />
       <Route path="/voters-results-page" element={<VotersResult />} />
       <Route

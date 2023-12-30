@@ -68,7 +68,7 @@ const AddVoter = () => {
     <>
       <Navbar />
       <div className={styles.electionPageCover}>
-        <Sidebar />
+        <Sidebar eid = {id} />
         <div className={styles.pageContent}>
           <h2>Add Voter</h2>
 

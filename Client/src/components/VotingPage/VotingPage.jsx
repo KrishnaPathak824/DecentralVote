@@ -5,19 +5,46 @@ import { votingData } from "./votingData";
 import CandidateItemCover from "../../ui/CandidateItemCover/CandidateItemCover";
 import { bouncy } from "ldrs";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const VotingPage = () => {
   const [votingList, setVotingList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const { id } = useParams();
   // const onVoteClicked = (removeId) => {
   // votingList
   // };
 
+
+
+  const fetchData = async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      console.log("id", id);
+
+      const response = await axios.get(
+        `http://localhost:4000/candidate/getcandidate/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("Response:", response.data);
+      setVotingList(response.data);
+    } catch (error) {
+      console.error("Error fetching voter data:", error);
+      setError(error.message); // or setError('Error fetching voter data');
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    setVotingList(votingData);
+    fetchData();
   }, []);
+  
 
   let content = <p>No Data Found</p>;
 
@@ -25,8 +52,8 @@ const VotingPage = () => {
     content = votingList.map((item) => {
       return (
         <CandidateItemCover
-          name={item.cName}
-          id={item.cId}
+          name={item.name}
+          id={item.id}
           // onVote={onVoteClicked}
         />
       );
@@ -37,7 +64,7 @@ const VotingPage = () => {
     <>
       <Navbar />
       <div className={styles.voterElectionPageCover}>
-        <VoterSidebar />
+        <VoterSidebar eid = {id} />
         <div
           className={`${styles["pageContent"]} ${
             isLoading ? styles.loading : ""

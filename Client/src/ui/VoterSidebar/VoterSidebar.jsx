@@ -24,7 +24,8 @@ const VoterSidebar = (props) => {
           />
         </Link>
 
-        <Link to="/voting-page">
+      
+          <Link to = {`/voting-page/${props.eid}`}>
           <SidebarComponent
             optionTitle="Voting"
             iconTitle={<HowToVoteOutlinedIcon />}
