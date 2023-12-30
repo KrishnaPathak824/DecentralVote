@@ -79,7 +79,15 @@ const login = async(req,res)=>{
 }
 
 
-
+const profile = async (req,res)=>{
+  try {
+    const User = req.user
+    console.log('user',User)
+    res.send(User)
+  } catch (error) {
+    
+  }
+}
 
 const logout = async(req,res)=>{
     try {
@@ -96,4 +104,4 @@ const logout = async(req,res)=>{
 
 
 
-module.exports = {register, login , logout}
+module.exports = {register, login ,profile, logout}

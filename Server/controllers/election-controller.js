@@ -48,8 +48,27 @@ const electionlist = async(req,res)=>{
     }
 }
 
+const voterelectionlist =  async(req,res)=>{
+  const User = req.user
+  console.log('user',User)
+  const voterId = User.voterID
+  console.log(voterId)
+  try {
+    const elections = await Election.find({
+      voters: {
+        $elemMatch: {
+          $eq: voterId,
+        },
+      },
+    });
+      console.log('elections',elections)
+      res.send({elections});
+  } catch (error) {
+      
+  }
+}
 
 
 
 
-module.exports = {electioncreation,electionlist}
+module.exports = {electioncreation,electionlist , voterelectionlist}
