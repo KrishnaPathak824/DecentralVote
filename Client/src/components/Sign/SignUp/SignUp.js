@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./SignUp.module.css";
 import useInput from "../../../hooks/use-input";
-import axios from "axios"
+import axios from "axios";
 const SignUp = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -12,6 +12,17 @@ const SignUp = (props) => {
     valueInputHandler: usernameInputHandler,
     valueBlurHandler: usernameBlurHandler,
     reset: usernameReset,
+  } = useInput((value) => {
+    return value && value.trim() !== "";
+  });
+
+  const {
+    value: enteredAddress,
+    valueIsInvalid: addressIsInvalid,
+    valueIsValid: addressIsValid,
+    valueInputHandler: addressInputHandler,
+    valueBlurHandler: addressBlurHandler,
+    reset: addressReset,
   } = useInput((value) => {
     return value && value.trim() !== "";
   });
@@ -63,18 +74,15 @@ const SignUp = (props) => {
   };
 
   const onSubmitNewUser = async (event) => {
-    
-      const name = enteredUsername
-      const password = enteredNewPassword
-
+    const name = enteredUsername;
+    const password = enteredNewPassword;
 
     try {
       const response = await axios.post("http://localhost:4000/user/signup", {
         name,
-        password
-
+        password,
       });
-      
+
       window.location.href = "/landing-page";
     } catch (err) {
       console.log(err);
@@ -110,6 +118,17 @@ const SignUp = (props) => {
           />
 
           {usernameIsInvalid && <p>Please enter Valid Username</p>}
+
+          <label htmlFor="address">Location</label>
+          <input
+            type="text"
+            id="address"
+            onChange={addressInputHandler}
+            onBlur={addressBlurHandler}
+            value={enteredAddress}
+          />
+
+          {addressIsInvalid && <p>Please enter Valid Address</p>}
 
           <label htmlFor="new-password">New Password</label>
           <input

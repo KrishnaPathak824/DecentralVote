@@ -124,10 +124,18 @@
 
 .signUpButton {
   width: 28%;
+  position: relative;
+  bottom: 12px;
   margin-left: 20%;
+  color: white;
   padding: 3%;
   border-radius: 17px;
   background-color: #817cc4;
+  transition: opacity 1s;
+}
+
+.signUpButton:hover {
+  opacity: 70%;
 }
 
 .signUpButton:disabled {
