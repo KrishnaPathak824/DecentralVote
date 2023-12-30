@@ -32,7 +32,7 @@ const VoterSidebar = (props) => {
           />
         </Link>
 
-        <Link to ={`/candidate-list/${props.eid}`}>
+        <Link to={`/voters-candidate-list/${props.eid}`}>
           <SidebarComponent
             optionTitle="Candidate List"
             iconTitle={<EmojiPeopleOutlinedIcon />}
