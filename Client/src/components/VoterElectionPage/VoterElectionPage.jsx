@@ -106,7 +106,7 @@ const VoterElectionPage = (props) => {
     <>
       <Navbar />
       <div className={styles.voterElectionPageCover}>
-        <VoterSidebar />
+        <VoterSidebar eid = {electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Overview</h2>

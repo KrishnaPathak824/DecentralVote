@@ -6,7 +6,7 @@ import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
 import HowToVoteOutlinedIcon from "@mui/icons-material/HowToVoteOutlined";
 import { Link } from "react-router-dom";
 
-const VoterSidebar = () => {
+const VoterSidebar = (props) => {
   return (
     <div className={styles.sidebarCover}>
       <div className={styles.sidebarContents}>
@@ -31,7 +31,7 @@ const VoterSidebar = () => {
           />
         </Link>
 
-        <Link to="/candidate-list">
+        <Link to ={`/candidate-list/${props.eid}`}>
           <SidebarComponent
             optionTitle="Candidate List"
             iconTitle={<EmojiPeopleOutlinedIcon />}

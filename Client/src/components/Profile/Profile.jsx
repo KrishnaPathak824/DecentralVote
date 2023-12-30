@@ -98,6 +98,7 @@ const Profile = () => {
     content1 = elections.map((item) => {
       return (
         <ProfileElectionItem
+         id = {item._id}
           title={item.title}
           organizer={item.organizer}
         /> // ProfileElectionItem is used for My Elections
@@ -109,6 +110,7 @@ const Profile = () => {
     content2 = voterelections.map((item) => {
       return (
         <ProfilePartElecItem
+          id={item._id}
           title={item.title}
           organizer={item.organizer}
           sDate={item.startdate}

@@ -7,6 +7,7 @@ const ProfileElectionItem = (props) => {
   const profElectionItemCtx = useContext(ElectionItemContext);
 
   const onElectionItemClicked = () => {
+    profElectionItemCtx.setItemId(props.id);
     profElectionItemCtx.setItemTitle(props.title);
     profElectionItemCtx.setItemOrganizer(props.organizer);
     profElectionItemCtx.setItemStartDate(props.sDate);

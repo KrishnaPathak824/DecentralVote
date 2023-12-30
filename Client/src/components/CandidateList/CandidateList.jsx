@@ -73,7 +73,7 @@ const CandidateList = () => {
     <>
       <Navbar />
       <div className={styles.votersListPageCover}>
-        <Sidebar />
+        <Sidebar eid = {id} />
         <div
           className={`${styles["pageContent"]} ${
             isLoading || candidateList.length === 0 ? styles.loading : ""

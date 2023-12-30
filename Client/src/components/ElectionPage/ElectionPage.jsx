@@ -102,7 +102,7 @@ const ElectionPage = (props) => {
     <>
       <Navbar />
       <div className={styles.electionPageCover}>
-        <Sidebar eid = {electionItemCtx.electionId}/>
+        <Sidebar eid = {electionItemCtx.id}/>
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Overview</h2>
@@ -125,7 +125,7 @@ const ElectionPage = (props) => {
           </div>
           <div className={styles.pageContentRight}>
             <div className={styles.infoBlocks}>
-              <ElectionPageData eid = {electionItemCtx.electionId} />
+              <ElectionPageData eid = {electionItemCtx.id} />
             </div>
           </div>
         </div>
