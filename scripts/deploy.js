@@ -8,6 +8,9 @@ async function main() {
   await votingContract.deployed();
 
   console.log("VotingContract deployed to:", votingContract.address);
+  
+ 
+  
 }
 
 main();

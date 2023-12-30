@@ -2,51 +2,32 @@
 pragma solidity ^0.8.0;
 
 contract Election {
-    struct Candidate {
-        string id;
-        string name;
-        uint votes;
-    }
+    mapping(address => bool) public hasVoted;
 
-    struct Voter {
-        bool hasVoted;
-        bool hasRegistered;
-        string votedFor; // Candidate ID the voter voted for
-    }
+    mapping(string => uint) public candidateVotes;
 
-    mapping(string => Candidate) public candidates;
-    mapping(string => Voter) public voters;
+    event VoteCasted(address indexed voter, string indexed candidateId);
 
-    event VoteCasted(string indexed voterId, string indexed candidateId);
-
-    modifier hasNotVoted(string memory _voterId) {
-        require(voters[_voterId].hasRegistered && !voters[_voterId].hasVoted, "Voter has already voted");
+    modifier hasNotVoted() {
+        require(!hasVoted[msg.sender], "You have already voted");
         _;
     }
 
-    function addCandidate(string memory _candidateId, string memory _name) external {
-        candidates[_candidateId] = Candidate(_candidateId, _name, 0);
-    }
+    function vote(string memory _candidateId) external hasNotVoted {
+        // You can add more validations here, like checking if the candidate exists
+        // For simplicity, I'm assuming that any string can be a valid candidate
 
-    function registerVoter(string memory _voterId) external {
-        require(!voters[_voterId].hasRegistered, "Voter already registered");
-        voters[_voterId].hasRegistered = true;
-    }
+        hasVoted[msg.sender] = true;
+        candidateVotes[_candidateId]++;
 
-    function vote(string memory _voterId, string memory _candidateId) external hasNotVoted(_voterId) {
-        require(voters[_voterId].hasRegistered, "Voter not registered");
-        voters[_voterId].hasVoted = true;
-        voters[_voterId].votedFor = _candidateId;
-        candidates[_candidateId].votes++;
-        emit VoteCasted(_voterId, _candidateId);
+        emit VoteCasted(msg.sender, _candidateId);
     }
 
     function getVotes(string memory _candidateId) external view returns (uint) {
-        return candidates[_candidateId].votes;
+        return candidateVotes[_candidateId];
     }
 
-    function getVoterVote(string memory _voterId) external view returns (bool hasVoted, string memory votedFor) {
-        Voter storage voter = voters[_voterId];
-        return (voter.hasVoted, voter.votedFor);
+    function hasUserVoted() external view returns (bool) {
+        return hasVoted[msg.sender];
     }
 }

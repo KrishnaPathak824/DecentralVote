@@ -45,57 +45,25 @@ const VotingPage = () => {
     );
 
     const voterIdFromResponse = voterIdentifierResponse.data.voterID;
-    console.log('voter', voterIdFromResponse);
+   // console.log('voter', voterIdFromResponse);
     setVoterId(voterIdFromResponse);
 
     // Check if the voter has voted
-    const provider = new ethers.providers.JsonRpcProvider();
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      contractAddress,
-      contractAbi,
-      signer
-    );
 
-    const hasVotedResponse = await contract.getVoterVote(voterIdFromResponse);
-    setHasVoted(hasVotedResponse[0]);
+   
   } catch (error) {
-    console.error("Error fetching voter data:", error);
-
-    console.log("Revert reason:", error.reason);
-    setError(error.message);
-  } finally {
-    setIsLoading(false);
-  }
+   
+  } 
+  
 };
 useEffect(() => {
   fetchData();
 }, []);
 
-  const onVoteClicked = async (candidateId) => {
-    if (hasVoted) {
-      console.log("You have already voted");
-      return;
-    }
-
-    try {
-      const provider = new ethers.providers.JsonRpcProvider();
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractAbi,
-        signer
-      );
-
+  const onVoteClicked = async () => {
+  
       // Trigger a transaction to vote for the selected candidate
-      await contract.vote(voterId, candidateId);
-
-      // Update the local state to reflect that the user has voted
-      setHasVoted(true);
-      console.log("Vote successful!");
-    } catch (error) {
-      console.error("Error voting:", error);
-    }
+    
   };
 
 
@@ -108,8 +76,9 @@ useEffect(() => {
         <CandidateItemCover
           key={item.id}
           name={item.name}
-          id={item.id}
-          onVote={() => onVoteClicked(item.id)}
+          id={item.voterID}
+          voterid = {voterId}
+          onVote={() => onVoteClicked(item.voterID)}
         />
       );
     });
