@@ -2,8 +2,14 @@ import styles from "./ElectionPageData.module.css";
 import HowToVoteOutlinedIcon from "@mui/icons-material/HowToVoteOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
+import axios from "axios";
+import { useState, useRef, useEffect, useContext } from "react";
 
-const ElectionPageData = () => {
+const ElectionPageData = (props) => {
+
+ 
+
+  
   return (
     <div className={styles.dataBlockCover}>
       <div className={styles.votes}>
@@ -21,7 +27,7 @@ const ElectionPageData = () => {
           <PeopleAltOutlinedIcon className={styles.icon} />
         </div>
         <div className={styles.dataContent}>
-          <h1>50</h1>
+          <h1>{props.num[0]}</h1>
           <h2>Voters</h2>
         </div>
       </div>
@@ -31,7 +37,7 @@ const ElectionPageData = () => {
           <Diversity3OutlinedIcon className={styles.icon} />
         </div>
         <div className={styles.dataContent}>
-          <h1>10</h1>
+          <h1>{props.num[1]}</h1>
           <h2>Candidates</h2>
         </div>
       </div>

@@ -2,13 +2,23 @@ import styles from "./CandidateItemCover.module.css";
 import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import { contractAbi, contractAddress } from './../../utils/constants';
-
+import { useParams } from "react-router-dom";
+import {utils} from 'ethers'
 const CandidateItemCover = (props) => {
   const [hasVoted, setHasVoted] = useState(false);
   const [error, setError] = useState(null);
   const [signer, setSigner] = useState(null);
-
+  const {electionid } = useParams()
+  let voterIDs = [];
+  
+const [candidateIds,setCandidateIds] = useState([])
   useEffect(() => {
+ 
+    
+  // console.log('aa',voterIDs)
+  
+    // Your array to store candidate data
+  
     const initializeSigner = async () => {
       try {
         // Connect to an Ethereum node or provider
@@ -21,6 +31,8 @@ const CandidateItemCover = (props) => {
         const wallet = new ethers.Wallet(privateKey, provider);
 
         setSigner(wallet);
+       
+
       } catch (error) {
         console.error("Error initializing signer:", error);
         setError("Failed to initialize signer. Please check your connection or private key.");
@@ -31,6 +43,7 @@ const CandidateItemCover = (props) => {
   }, []);
 
   const onVoteHandler = async () => {
+   
     try {
       // Check if signer is initialized
       if (!signer) {
@@ -39,20 +52,45 @@ const CandidateItemCover = (props) => {
       }
 
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-      
+
+    
+      const getVotes = await contract.getVotes(props.eid, props.id);
+      const votes = getVotes.toString(); // or use toNumber()
+      console.log('Votes:', votes);
       // Check if the user has already voted by querying the smart contract
-      const userHasVoted = await contract.hasUserVoted;
+      const userHasVoted = await contract.hasUserVoted(props.eid, props.voterid);
       if (userHasVoted) {
-          console.log("User has already voted.");
-          return; // Exit early, no need to proceed with voting again.
+        console.log("User has already voted.");
+      
+        voterIDs = props.candidate.map(item => item.voterID);
+       
+      
+         const result =  await contract.getAllCandidateVotes(props.eid, voterIDs)
+
+         const formattedVotes = result.map(candidate => ({
+          candidateId: candidate[0],
+          votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
+        }));
+        
+        console.log('Formatted Votes:', formattedVotes);
+      
+      // Now candidateList contains the data for each candidate
+   
+     
+     
+    
+        
+       
+     return;
       }
       
-
+    
       // Trigger a transaction to vote for the selected candidate
-      const transaction = await contract.vote(props.id);
+      const transaction = await contract.vote(props.eid, props.voterid,props.id);
+
       await transaction.wait();
       
-
+      console.log('voted')
       // Update the local state to reflect that the user has voted
       setHasVoted(true);
     } catch (error) {

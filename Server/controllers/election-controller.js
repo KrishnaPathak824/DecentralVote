@@ -68,7 +68,32 @@ const voterelectionlist =  async(req,res)=>{
   }
 }
 
+const electiondata = async(req,res)=>{
+  try {
+    // Find the election by ID
+    const { electionId } = req.params;
+   
+    const election = await Election.findById(electionId);
+
+
+    if (!election) {
+      throw new Error('Election not found');
+    }
+
+    // Get the number of voters and candidates
+    const numVoters = election.voters.length;
+    const numCandidates = election.candidates.length;
+    let  Numbers = [numVoters,numCandidates]
+   
+    // Return the results
+    res.send(Numbers);
+  } catch (error) {
+    console.error('Error getting election stats:', error.message);
+    throw error;
+  }
+}
 
 
 
-module.exports = {electioncreation,electionlist , voterelectionlist}
+
+module.exports = {electioncreation,electionlist , voterelectionlist, electiondata}
