@@ -75,7 +75,9 @@ useEffect(() => {
       return (
         <CandidateItemCover
           key={item.id}
+          candidate = {votingList}
           name={item.name}
+          eid = {id}
           id={item.voterID}
           voterid = {voterId}
           onVote={() => onVoteClicked(item.voterID)}

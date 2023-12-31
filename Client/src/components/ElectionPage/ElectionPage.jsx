@@ -8,8 +8,14 @@ import LineChart from "../../ui/LineChart/LineChart";
 import { useState, useRef, useEffect, useContext } from "react";
 import ElectionItemContext from "../../contexts/electionItem-context";
 import Chart from "chart.js/auto";
+import axios from "axios";
 
 const ElectionPage = (props) => {
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [numbers,setNumbers] = useState([])
+ 
   const electionItemCtx = useContext(ElectionItemContext);
 
   const canvasRef = useRef(null);
@@ -64,7 +70,35 @@ const ElectionPage = (props) => {
     },
   };
 
+  const fetchData = async () => {
+    setError(null);
+    setIsLoading(true);
+  
+    try {
+      console.log('id',electionItemCtx.id)
+      const response = await axios.get(
+        `http://localhost:4000/election/electiondata/${electionItemCtx.id}`,
+        {
+          withCredentials: true,
+        }
+      );
+  
+     // const extractedVoterIds = response.data.map(item => item.voterID);
+      //  console.log('candidates', extractedVoterIds)
+      setNumbers(response.data)
+   
+  
+    
+    
+     
+    } catch (error) {
+     console.log('error',error)
+    } 
+    
+  };
+
   useEffect(() => {
+    fetchData();
     const canvas = canvasRef.current;
 
     if (canvas) {
@@ -78,6 +112,8 @@ const ElectionPage = (props) => {
       gradient.addColorStop(0, "rgba(58,255,213,1)");
       gradient.addColorStop(1, "rgba(0 , 0 , 255 ,0.3)");
 
+
+   
       // Update the state with the new dataset including the backgroundColor
       setUserData((prevUserData) => ({
         ...prevUserData,
@@ -125,7 +161,7 @@ const ElectionPage = (props) => {
           </div>
           <div className={styles.pageContentRight}>
             <div className={styles.infoBlocks}>
-              <ElectionPageData eid = {electionItemCtx.id} />
+              <ElectionPageData num = {numbers} />
             </div>
           </div>
         </div>

@@ -7,9 +7,12 @@ import { UserData } from "../../ui/LineChart/Data";
 import LineChart from "../../ui/LineChart/LineChart";
 import { useState, useRef, useEffect, useContext } from "react";
 import ElectionItemContext from "../../contexts/electionItem-context";
+import axios from "axios";
 
 const VoterElectionPage = (props) => {
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [numbers,setNumbers] = useState([])
     const electionItemCtx = useContext(ElectionItemContext);
 
     const canvasRef = useRef(null);
@@ -67,8 +70,35 @@ const VoterElectionPage = (props) => {
         },
       },
     };
+    const fetchData = async () => {
+      setError(null);
+      setIsLoading(true);
+    
+      try {
+        console.log('id',electionItemCtx.id)
+        const response = await axios.get(
+          `http://localhost:4000/election/electiondata/${electionItemCtx.id}`,
+          {
+            withCredentials: true,
+          }
+        );
+    
+       // const extractedVoterIds = response.data.map(item => item.voterID);
+        //  console.log('candidates', extractedVoterIds)
+        setNumbers(response.data)
+     
+    
+      
+      
+       
+      } catch (error) {
+       console.log('error',error)
+      } 
+      
+    };
 
     useEffect(() => {
+      fetchData()
       const canvas = canvasRef.current;
 
       if (canvas) {
@@ -129,7 +159,7 @@ const VoterElectionPage = (props) => {
           </div>
           <div className={styles.pageContentRight}>
             <div className={styles.infoBlocks}>
-              <ElectionPageData />
+              <ElectionPageData  num = {numbers}/>
             </div>
           </div>
         </div>
