@@ -96,10 +96,15 @@ const SignUp = (props) => {
       }`}
     >
       {" "}
-      <h3>Decentral Vote</h3>
-      <p>Vote responsibly</p>
+      <div className={styles.logoCover}>
+        <img
+          className={styles.logo}
+          src="\images\navbarlogo.png"
+          alt="decentral vote logo"
+        />
+      </div>
       <h4>Welcome To Decentral Vote!!</h4>
-      <h5>Please Sign-In to your account</h5>
+      <h7>Please Sign-In to your account</h7>
       <form onSubmit={formSubmitHandler}>
         <div
           className={`${styles["formInputs"]} ${

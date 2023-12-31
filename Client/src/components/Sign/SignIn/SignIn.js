@@ -90,10 +90,15 @@ const SignIn = (props) => {
         props.value === "signUp" ? styles.rightPanelActive : ""
       }`}
     >
-      <h3>Decentral Vote</h3>
-      <p>Vote responsibly</p>
+      <div className={styles.logoCover}>
+        <img
+          className={styles.logo}
+          src="\images\navbarlogo.png"
+          alt="decentral vote logo"
+        />
+      </div>
       <h4>Welcome To Decentral Vote!!</h4>
-      <h5>Please Sign-In to your account</h5>
+      <h7>Please Sign-In to your account</h7>
 
       <form onSubmit={onSubmitHandler}>
         <div
@@ -138,7 +143,7 @@ const SignIn = (props) => {
         </div>
         <div className={styles.formActions}>
           <button className={styles.signInButton} disabled={!formIsValid}>
-         sign in
+            sign in
           </button>
         </div>
       </form>
