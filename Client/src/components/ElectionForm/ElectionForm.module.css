@@ -13,6 +13,7 @@
 
 .formContent {
   /* border: 1px solid red; */
+
   position: relative;
   bottom: 30px;
   height: 90vh;
@@ -86,7 +87,7 @@
   position: relative;
   bottom: 8%;
   border-radius: 22px;
-  background-color: #d9d9d9;
+  background-color: #3d424c;
   opacity: 90%;
   height: 70%;
   width: 60%;

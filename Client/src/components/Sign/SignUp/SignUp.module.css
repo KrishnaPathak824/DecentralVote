@@ -32,9 +32,26 @@
   }
 }
 
-.signUpContainer h3 {
-  font-weight: 200;
-  margin-left: 20%;
+.logoCover {
+  position: relative;
+  left: 30%;
+  background-image: linear-gradient(to bottom, rgb(94, 92, 92), white);
+  background-clip: text;
+  color: transparent;
+  max-height: 15%;
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  flex: 70%;
+}
+
+.logo {
+  position: relative;
+  right: 15%;
+  object-fit: contain;
+  width: 50%;
+  height: 50%;
 }
 
 .signUpContainer h4 {
@@ -42,6 +59,15 @@
   font-size: 15px;
   margin-left: 22%;
   margin-top: -0.1px;
+  color: #c1beed;
+}
+.signUpContainer h7 {
+  font-weight: 200;
+  opacity: 75%;
+  font-size: 12px;
+  margin-left: 22%;
+  margin-top: -0.1px;
+  color: #c1beed;
 }
 
 .signUpContainer p {
@@ -50,14 +76,6 @@
   font-size: 11px;
   margin-left: 24.5%;
   opacity: 50%;
-}
-
-.signUpContainer h5 {
-  opacity: 40%;
-  font-weight: 400;
-  font-size: 12px;
-  margin-top: -3%;
-  margin-right: 17%;
 }
 
 .formInputs {
@@ -89,9 +107,9 @@
   color: red;
 }
 
-.signUpContainer label {
+label {
   padding: 2px;
-  color: #706f7d;
+  color: #c1beed;
 }
 
 .signUpContainer input {
@@ -124,18 +142,10 @@
 
 .signUpButton {
   width: 28%;
-  position: relative;
-  bottom: 12px;
   margin-left: 20%;
-  color: white;
   padding: 3%;
   border-radius: 17px;
   background-color: #817cc4;
-  transition: opacity 1s;
-}
-
-.signUpButton:hover {
-  opacity: 70%;
 }
 
 .signUpButton:disabled {
