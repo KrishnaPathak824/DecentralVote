@@ -5,8 +5,8 @@ import CandidateItemCover from "../../ui/CandidateItemCover/CandidateItemCover";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { contractAbi, contractAddress } from './../../utils/constants';
-const {ethers} = require('ethers')
+import { contractAbi, contractAddress } from "./../../utils/constants";
+const { ethers } = require("ethers");
 
 const VotingPage = () => {
   const [votingList, setVotingList] = useState([]);
@@ -16,70 +16,66 @@ const VotingPage = () => {
   const [voterId, setVoterId] = useState(); // Store the voter's unique identifier
   const { id } = useParams();
 
- // Replace with your contract ABI
+  // Replace with your contract ABI
 
- const fetchData = async () => {
-  setError(null);
-  setIsLoading(true);
+  const fetchData = async () => {
+    setError(null);
+    setIsLoading(true);
 
-  try {
-    const response = await axios.get(
-      `http://localhost:4000/candidate/getcandidate/${id}`,
-      {
-        withCredentials: true,
-      }
-    );
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/candidate/getcandidate/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-   // const extractedVoterIds = response.data.map(item => item.voterID);
-    //  console.log('candidates', extractedVoterIds)
-    
-    // Set the voterIDs to the state variable
-    setVotingList(response.data);
+      // const extractedVoterIds = response.data.map(item => item.voterID);
+      //  console.log('candidates', extractedVoterIds)
 
-    // Get the voter's unique identifier using an API call, assuming you have an endpoint for this
-    const voterIdentifierResponse = await axios.get(
-      `http://localhost:4000/user/profile`,
-      {
-        withCredentials: true,
-      }
-    );
+      // Set the voterIDs to the state variable
+      setVotingList(response.data);
 
-    const voterIdFromResponse = voterIdentifierResponse.data.voterID;
-   // console.log('voter', voterIdFromResponse);
-    setVoterId(voterIdFromResponse);
+      // Get the voter's unique identifier using an API call, assuming you have an endpoint for this
+      const voterIdentifierResponse = await axios.get(
+        `http://localhost:4000/user/profile`,
+        {
+          withCredentials: true,
+        }
+      );
 
-    // Check if the voter has voted
+      const voterIdFromResponse = voterIdentifierResponse.data.voterID;
+      // console.log('voter', voterIdFromResponse);
+      setVoterId(voterIdFromResponse);
 
-   
-  } catch (error) {
-   
-  } 
-  
-};
-useEffect(() => {
-  fetchData();
-}, []);
+      // Check if the voter has voted
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const onVoteClicked = async () => {
-  
-      // Trigger a transaction to vote for the selected candidate
-    
+    // Trigger a transaction to vote for the selected candidate
   };
-
-
 
   let content = <p>No Data Found</p>;
 
-  if ( votingList.length > 0) {
+  const onAlreadyVotedError = () => {
+    setHasVoted(true);
+  };
+
+  if (votingList.length > 0) {
     content = votingList.map((item) => {
       return (
         <CandidateItemCover
           key={item.id}
-          candidate = {votingList}
+          candidate={votingList}
           name={item.name}
-          eid = {id}
+          eid={id}
           id={item.voterID}
-          voterid = {voterId}
+          voterid={voterId}
+          onVoted={onAlreadyVotedError}
           onVote={() => onVoteClicked(item.voterID)}
         />
       );
@@ -91,12 +87,17 @@ useEffect(() => {
       <Navbar />
       <div className={styles.voterElectionPageCover}>
         <VoterSidebar eid={id} />
+
         <div
           className={`${styles["pageContent"]} ${
             isLoading ? styles.loading : ""
           }`}
         >
-          {content}
+          <h2>Voting Page</h2>
+          <div className={styles.contentCover}> {content}</div>
+          <div className={styles.errorMessage}>
+            {hasVoted ? <h3>You Have Already Voted</h3> : ""}
+          </div>
         </div>
       </div>
     </>

@@ -8,31 +8,21 @@ import { participatedElections } from "./participatedElections";
 import ProfileElectionItem from "../../ui/ProfileElectionItem/ProfileElectionItem";
 import axios from "axios";
 const Profile = () => {
-  const [profile , setProfile] = useState()
+  const [profile, setProfile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [elections,setElections] = useState()
-  const [voterelections,setVoterelections] = useState()
+  const [elections, setElections] = useState();
+  const [voterelections, setVoterelections] = useState();
 
   const fetchData = async () => {
-    
     setError(null);
     setIsLoading(true);
 
-
-
     try {
-      
-
-      const response = await axios.get(
-        `http://localhost:4000/user/profile`,
-        {
-          withCredentials: true,
-        }
-        
-      );
-        setProfile(response.data)
-     
+      const response = await axios.get(`http://localhost:4000/user/profile`, {
+        withCredentials: true,
+      });
+      setProfile(response.data);
     } catch (error) {
       console.error("Error fetching voter data:", error);
       setError(error.message); // or setError('Error fetching voter data');
@@ -45,17 +35,14 @@ const Profile = () => {
     setIsLoading(true);
 
     try {
-    
       axios
-      .get("http://localhost:4000/election/electionlist", {
-        withCredentials: true,
-      })
-      .then((res) => {
-    
-        setElections(res.data.elections);
-        console.log('elections',elections)
-      })
-
+        .get("http://localhost:4000/election/electionlist", {
+          withCredentials: true,
+        })
+        .then((res) => {
+          setElections(res.data.elections);
+          console.log("elections", elections);
+        });
     } catch (error) {
       setError(error.meesage);
     }
@@ -67,17 +54,14 @@ const Profile = () => {
     setIsLoading(true);
 
     try {
-    
       axios
-      .get("http://localhost:4000/election/getvoterselection", {
-        withCredentials: true,
-      })
-      .then((res) => {
-    
-        setVoterelections(res.data.elections);
-        console.log('elections',elections)
-      })
-
+        .get("http://localhost:4000/election/getvoterselection", {
+          withCredentials: true,
+        })
+        .then((res) => {
+          setVoterelections(res.data.elections);
+          console.log("elections", elections);
+        });
     } catch (error) {
       setError(error.meesage);
     }
@@ -86,19 +70,18 @@ const Profile = () => {
   };
   useEffect(() => {
     fetchData();
-    fetchElection()
-    fetchvoterElection()
+    fetchElection();
+    fetchvoterElection();
   }, []);
- 
 
   let content1 = <p>No Data Found</p>;
   let content2 = <p>No Data Found</p>;
- 
+
   if (elections && elections.length > 0) {
     content1 = elections.map((item) => {
       return (
         <ProfileElectionItem
-         id = {item._id}
+          id={item._id}
           title={item.title}
           organizer={item.organizer}
         /> // ProfileElectionItem is used for My Elections
@@ -131,14 +114,14 @@ const Profile = () => {
               <img src="\images\add-candidate-image.png" alt="" />
             </div>
             <div className={styles.userInfo}>
-  {profile && (
-    <>
-      <h1>{profile.name}</h1>
-      <h3>Kathmandu, Nepal</h3>
-      <h4>Voter ID: {profile.voterID}</h4>
-    </>
-  )}
-</div>
+              {profile && (
+                <>
+                  <h1>{profile.name}</h1>
+                  <h3>Kathmandu, Nepal</h3>
+                  <h4>Voter ID: {profile.voterID}</h4>
+                </>
+              )}
+            </div>
           </div>
           <div className={styles.pageDownContent}>
             <div className={styles.myElections}>
