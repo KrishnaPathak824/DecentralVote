@@ -1,41 +1,43 @@
 import styles from "./CandidateItemCover.module.css";
 import { useState, useEffect } from "react";
-import { ethers } from 'ethers';
-import { contractAbi, contractAddress } from './../../utils/constants';
+import { ethers } from "ethers";
+import { contractAbi, contractAddress } from "./../../utils/constants";
 import { useParams } from "react-router-dom";
-import {utils} from 'ethers'
+import { utils } from "ethers";
+
 const CandidateItemCover = (props) => {
   const [hasVoted, setHasVoted] = useState(false);
   const [error, setError] = useState(null);
   const [signer, setSigner] = useState(null);
-  const {electionid } = useParams()
+  const { electionid } = useParams();
   let voterIDs = [];
-  
-const [candidateIds,setCandidateIds] = useState([])
+
+  const [candidateIds, setCandidateIds] = useState([]);
   useEffect(() => {
- 
-    
-  // console.log('aa',voterIDs)
-  
+    // console.log('aa',voterIDs)
+
     // Your array to store candidate data
-  
+
     const initializeSigner = async () => {
       try {
         // Connect to an Ethereum node or provider
-        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+        const provider = new ethers.providers.JsonRpcProvider(
+          "http://127.0.0.1:8545"
+        );
 
         // You can also use other providers like WalletConnectProvider, etc.
 
         // Get the signer using a private key or other authentication method
-        const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+        const privateKey =
+          "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
         const wallet = new ethers.Wallet(privateKey, provider);
 
         setSigner(wallet);
-       
-
       } catch (error) {
         console.error("Error initializing signer:", error);
-        setError("Failed to initialize signer. Please check your connection or private key.");
+        setError(
+          "Failed to initialize signer. Please check your connection or private key."
+        );
       }
     };
 
@@ -43,7 +45,11 @@ const [candidateIds,setCandidateIds] = useState([])
   }, []);
 
   const onVoteHandler = async () => {
-   
+    // Update the local state to reflect that the user has voted
+    setHasVoted(true);
+
+    props.onVoted();
+
     try {
       // Check if signer is initialized
       if (!signer) {
@@ -51,7 +57,11 @@ const [candidateIds,setCandidateIds] = useState([])
         return;
       }
 
-      const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractAbi,
+        signer
+      );
 
       const hasElectionEnded = await contract.hasElectionEnded(props.eid);
       const getVotes = await contract.getVotes(props.eid, props.id);
@@ -105,7 +115,9 @@ const [candidateIds,setCandidateIds] = useState([])
     
     } catch (error) {
       console.error("Error voting:", error);
-      setError("An error occurred while processing your vote. Please try again.");
+      setError(
+        "An error occurred while processing your vote. Please try again."
+      );
     }
   };
 

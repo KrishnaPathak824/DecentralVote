@@ -26,7 +26,6 @@ const SignCover = () => {
         <div className={styles.overlay}>
           <div className={`${styles["overlayPanel"]} ${styles.leftOverlay}`}>
             <img className={styles.logo} src="images\logo-pink.png" alt="" />
-            <h5> Voting made Safer</h5>
             <p>Already Have an Account?</p>
             <button
               className={styles.coverButton}
