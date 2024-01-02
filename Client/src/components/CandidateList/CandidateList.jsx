@@ -14,8 +14,10 @@ const CandidateList = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
 
-  const onRemoveClicked = (removeId) => {
-    setCandidateList(CandidateList.filter((item) => item.voterID !== removeId));
+  const onRemoveClicked = async (removeId) => {
+    setCandidateList(candidateList.filter((item) => item.voterID !== removeId));
+
+    console.log("removed");
   };
 
   const fetchData = async () => {
@@ -31,11 +33,20 @@ const CandidateList = () => {
         }
       );
 
+      if (response.status === 200) {
+        setCandidateList(response.data);
+      } else {
+        setError("Data not found"); // Provide a specific error message for 404
+      }
+
       console.log("Response:", response.data);
       setCandidateList(response.data);
     } catch (error) {
-      console.error("Error fetching voter data:", error);
-      setError(error.message); // or setError('Error fetching voter data');
+      if (error.response && error.response.status === 404) {
+        setError("Data not found"); // Handle 404 error explicitly
+      } else {
+        setError("Error fetching candidate data"); // Generic error message for other errors
+      }
     }
     setIsLoading(false);
   };
@@ -44,13 +55,14 @@ const CandidateList = () => {
     fetchData();
   }, []);
 
-  let content = <p>No Data Found</p>;
+  let content = <p>No Candidates Present Yet</p>;
 
   if (candidateList.length > 0) {
     content = candidateList.map((item) => {
       return (
         <UserItemCover
           name={item.name}
+          electionId={id}
           id={item.voterID}
           onRemove={onRemoveClicked}
         />
@@ -72,14 +84,17 @@ const CandidateList = () => {
   return (
     <>
       <Navbar />
-      <div className={styles.votersListPageCover}>
-        <Sidebar eid = {id} />
-        <div
-          className={`${styles["pageContent"]} ${
-            isLoading || candidateList.length === 0 ? styles.loading : ""
-          }`}
-        >
-          {content}
+      <div className={styles.candidateListPageCover}>
+        <Sidebar eid={id} />
+        <div className={styles.pageContent}>
+          <h2>Candidate List</h2>
+          <div
+            className={`${styles["contentCover"]} ${
+              isLoading || candidateList.length === 0 ? styles.noData : ""
+            } `}
+          >
+            {content}
+          </div>
         </div>
       </div>
     </>

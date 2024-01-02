@@ -50,9 +50,9 @@ const electionlist = async(req,res)=>{
 
 const voterelectionlist =  async(req,res)=>{
   const User = req.user
-  console.log('user',User)
+ // console.log('user',User)
   const voterId = User.voterID
-  console.log(voterId)
+ // console.log(voterId)
   try {
     const elections = await Election.find({
       voters: {

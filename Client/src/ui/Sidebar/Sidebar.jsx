@@ -22,10 +22,12 @@ const Sidebar = (props) => {
           />
         </Link>
 
-        <SidebarComponent
-          optionTitle="Results"
-          iconTitle={<PollOutlinedIcon />}
-        />
+        <Link to = "/results-page">
+          <SidebarComponent
+            optionTitle="Results"
+            iconTitle={<PollOutlinedIcon />}
+          />{" "}
+        </Link>
 
         <Link to={`/voters-list/${props.eid}`}>
           <SidebarComponent
@@ -34,7 +36,7 @@ const Sidebar = (props) => {
           />
         </Link>
 
-        <Link to ={`/candidate-list/${props.eid}`}>
+        <Link to={`/candidate-list/${props.eid}`}>
           <SidebarComponent
             optionTitle="Candidate List"
             iconTitle={<EmojiPeopleOutlinedIcon />}
@@ -45,7 +47,6 @@ const Sidebar = (props) => {
           <SidebarComponent
             optionTitle="Add Voter"
             iconTitle={<GroupAddOutlinedIcon />}
-      
           />
         </Link>
 

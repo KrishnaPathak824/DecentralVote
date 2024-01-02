@@ -87,4 +87,30 @@ const getVoterInfo = async (req,res,next) => {
     }
   };
 
-module.exports = { addVoter , getVoterInfo };
+
+  const deletevoter = async (req,res,next) =>{
+    try {
+        const {electionId} = req.params
+        const {voterId} = req.body
+      // Update the election by pulling the candidateId from the candidates array
+      const result = await Election.updateOne(
+      
+        { _id: electionId },
+        { $pull: { voters: voterId } }
+      );
+  
+      if (result.nModified === 0) {
+        throw new Error('Voter not found or election not updated');
+      }
+      
+      console.log('Voter deleted successfully');
+      
+    } catch (error) {
+      console.error('Error deleting candidate:', error.message);
+      throw error;
+    }
+  }
+  
+  
+
+module.exports = { addVoter , getVoterInfo , deletevoter};

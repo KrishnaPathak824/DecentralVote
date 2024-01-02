@@ -99,7 +99,6 @@
 }
 
 .pieChartCover {
-  border: 1px solid black;
   position: relative;
   height: 60vh; /* Adjust the height as needed */
   margin: auto;

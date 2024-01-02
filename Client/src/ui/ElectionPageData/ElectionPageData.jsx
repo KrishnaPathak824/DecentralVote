@@ -6,10 +6,6 @@ import axios from "axios";
 import { useState, useRef, useEffect, useContext } from "react";
 
 const ElectionPageData = (props) => {
-
- 
-
-  
   return (
     <div className={styles.dataBlockCover}>
       <div className={styles.votes}>

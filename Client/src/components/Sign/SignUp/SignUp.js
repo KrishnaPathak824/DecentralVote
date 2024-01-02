@@ -49,6 +49,17 @@ const SignUp = (props) => {
     return value && value.trim() === enteredPassword;
   });
 
+  const {
+    value: enteredAge,
+    valueIsValid: ageIsValid,
+    valueIsInvalid: ageIsInvalid,
+    valueInputHandler: ageInputHandler,
+    valueBlurHandler: ageBlurHandler,
+    reset: agePasswordReset,
+  } = useInput((value) => {
+    return value && value.trim() === enteredPassword;
+  });
+
   useEffect(() => {
     if (usernameIsValid && passwordIsValid && newPasswordIsValid) {
       setFormIsValid(true);
@@ -131,6 +142,17 @@ const SignUp = (props) => {
             onChange={addressInputHandler}
             onBlur={addressBlurHandler}
             value={enteredAddress}
+          />
+
+          {addressIsInvalid && <p>Please enter Valid Address</p>}
+
+          <label htmlFor="age">Age</label>
+          <input
+            type="text"
+            id="age"
+            onChange={ageInputHandler}
+            onBlur={ageBlurHandler}
+            value={enteredAge}
           />
 
           {addressIsInvalid && <p>Please enter Valid Address</p>}
