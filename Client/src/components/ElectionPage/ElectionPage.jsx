@@ -9,19 +9,19 @@ import { useState, useRef, useEffect, useContext } from "react";
 import ElectionItemContext from "../../contexts/electionItem-context";
 import Chart from "chart.js/auto";
 import axios from "axios";
-import { ethers } from 'ethers';
-import { contractAbi, contractAddress } from './../../utils/constants';
+import { ethers } from "ethers";
+import { contractAbi, contractAddress } from "./../../utils/constants";
 import { useParams } from "react-router-dom";
-import {utils} from 'ethers'
+import { utils } from "ethers";
 
 const ElectionPage = (props) => {
   const electionItemCtx = useContext(ElectionItemContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [numbers,setNumbers] = useState([])
+  const [numbers, setNumbers] = useState([]);
   const [signer, setSigner] = useState(null);
-  const [candidate,setCandidate] = useState()
- 
+  const [candidate, setCandidate] = useState();
+
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
   const [delayed, setDelayed] = useState(false);
@@ -74,9 +74,8 @@ const ElectionPage = (props) => {
     },
   };
 
-
-  const handleClick = async()=>{
-    console.log('Button Clicked') 
+  const handleClick = async () => {
+    console.log("Button Clicked");
     try {
       // Check if signer is initialized
       if (!signer) {
@@ -84,23 +83,24 @@ const ElectionPage = (props) => {
         return;
       }
 
-      const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractAbi,
+        signer
+      );
 
-    const endElection = await contract.endElection(electionItemCtx.id)
-    
-
-  }catch(err){
-    console.log('error',error)
-  }
-}
-
+      const endElection = await contract.endElection(electionItemCtx.id);
+    } catch (err) {
+      console.log("error", error);
+    }
+  };
 
   const fetchData = async () => {
     setError(null);
     setIsLoading(true);
-  
+
     try {
-      console.log('id',electionItemCtx.id)
+      console.log("id", electionItemCtx.id);
       const response = await axios.get(
         `http://localhost:4000/election/electiondata/${electionItemCtx.id}`,
         {
@@ -108,79 +108,78 @@ const ElectionPage = (props) => {
         }
       );
 
-       // const extractedVoterIds = response.data.map(item => item.voterID);
+      // const extractedVoterIds = response.data.map(item => item.voterID);
       //  console.log('candidates', extractedVoterIds)
-      setNumbers(response.data)
-     
-   
-  
-    
-    
-     
+      setNumbers(response.data);
     } catch (error) {
-     console.log('error',error)
-    } 
-    
+      console.log("error", error);
+    }
   };
 
-  const handleResult = async()=>{
+  const handleResult = async () => {
     setError(null);
     setIsLoading(true);
-  
+
     try {
       const candidateresponse = await axios.get(
         `http://localhost:4000/candidate/getcandidate/${electionItemCtx.id}`,
         {
           withCredentials: true,
         }
-      )
-     
-      const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-      voterIDs = candidateresponse.data.map(item => item.voterID);
-      console.log('aa',voterIDs)
-      const result =  await contract.getAllCandidateVotes(electionItemCtx.id, voterIDs)
-        console.log('xxx',result)
-      const formattedVotes = result.map(candidate => ({
-       candidateId: candidate[0],
-       votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
-     }));
-     
-     console.log('Formatted Votes:', formattedVotes);
-     
+      );
+
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractAbi,
+        signer
+      );
+      voterIDs = candidateresponse.data.map((item) => item.voterID);
+      console.log("aa", voterIDs);
+      const result = await contract.getAllCandidateVotes(
+        electionItemCtx.id,
+        voterIDs
+      );
+      console.log("xxx", result);
+      const formattedVotes = result.map((candidate) => ({
+        candidateId: candidate[0],
+        votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
+      }));
+
+      console.log("Formatted Votes:", formattedVotes);
     } catch (error) {
-     console.log('error',error)
-    } 
-    
-  }
+      console.log("error", error);
+    }
+  };
 
   const initializeSigner = async () => {
     try {
       // Connect to an Ethereum node or provider
-     
-      const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+
+      const provider = new ethers.providers.JsonRpcProvider(
+        "http://127.0.0.1:8545"
+      );
 
       // You can also use other providers like WalletConnectProvider, etc.
 
       // Get the signer using a private key or other authentication method
-      const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+      const privateKey =
+        "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
       const wallet = new ethers.Wallet(privateKey, provider);
-      console.log('wallet',wallet)
+      console.log("wallet", wallet);
       setSigner(wallet);
-      console.log('signer',signer)
-
+      console.log("signer", signer);
     } catch (error) {
       console.error("Error initializing signer:", error);
-      setError("Failed to initialize signer. Please check your connection or private key.");
+      setError(
+        "Failed to initialize signer. Please check your connection or private key."
+      );
     }
   };
 
-  
-
   useEffect(() => {
-   
-    fetchData()
-    initializeSigner()
- 
+    fetchData();
+    initializeSigner();
+
     const canvas = canvasRef.current;
 
     if (canvas) {
@@ -194,8 +193,6 @@ const ElectionPage = (props) => {
       gradient.addColorStop(0, "rgba(58,255,213,1)");
       gradient.addColorStop(1, "rgba(0 , 0 , 255 ,0.3)");
 
-
-     
       // Update the state with the new dataset including the backgroundColor
       setUserData((prevUserData) => ({
         ...prevUserData,
@@ -207,22 +204,20 @@ const ElectionPage = (props) => {
         ],
       }));
     }
-    
-    
+
     return () => {
       // Cleanup: Destroy the chart when the component unmounts
       if (chartRef.current) {
         chartRef.current.destroy();
       }
     };
-   
   }, []);
 
   return (
     <>
       <Navbar />
       <div className={styles.electionPageCover}>
-        <Sidebar eid = {electionItemCtx.id}/>
+        <Sidebar eid={electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Overview</h2>
@@ -235,10 +230,11 @@ const ElectionPage = (props) => {
                 <div className={styles.electionDate}>
                   <CalendarTodayOutlinedIcon className={styles.icon} />
                   <p>11/30 - 12/22</p>
-               
                 </div>
-                <button onClick = {handleClick}>End Election</button>
-                <button onClick = {handleResult}>Results</button>
+                <button className={styles.endElectionBtn} onClick={handleClick}>
+                  End Election
+                </button>
+                <button onClick={handleResult}>Results</button>
               </div>
             </div>
             <div className={styles.lineChartCover}>
@@ -248,7 +244,7 @@ const ElectionPage = (props) => {
           </div>
           <div className={styles.pageContentRight}>
             <div className={styles.infoBlocks}>
-              <ElectionPageData num = {numbers} />
+              <ElectionPageData num={numbers} />
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-.votersListPageCover {
+.candidateListPageCover {
   height: 90vh;
   display: flex;
 }
@@ -7,7 +7,7 @@
   width: 80%;
   display: flex;
   padding: 5%;
-
+  flex-direction: column;
   flex-wrap: wrap;
   /* justify-content: space-evenly; */
 }
@@ -18,6 +18,10 @@
 }
 
 .pageContent.loading p {
+  border-radius: 22px;
+  background-color: #c1beed;
+  color: #282c34;
+  padding: 20px;
   font-size: 30px;
   font-weight: 500;
 }

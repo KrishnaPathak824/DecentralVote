@@ -14,6 +14,7 @@ import { Route, Routes } from "react-router-dom";
 import VotersResult from "./components/VotersResult/VotersResult";
 import VoterElectionPage from "./components/VoterElectionPage/VoterElectionPage";
 import ParticipatedElections from "./components/ParticipatedElections/ParticipatedElections";
+import TestChart from "./components/TestChart/TestChart";
 import VotersCandidateList from "./components/VotersCandidateList/VotersCandidateList";
 import { useState } from "react";
 
@@ -42,7 +43,11 @@ function App() {
         path="/participated-elections-list"
         element={<ParticipatedElections />}
       />
-      <Route path="/voters-candidate-list/:id" element={<VotersCandidateList />} />
+      <Route
+        path="/voters-candidate-list/:id"
+        element={<VotersCandidateList />}
+      />
+      <Route path="/test-chart" element={<TestChart />} />
     </Routes>
   );
 }

@@ -80,8 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  right: 6%;
-
+  left: 20%;
   border-radius: 12px;
   width: 25%;
   height: 55%;
@@ -117,4 +116,18 @@
 
 .infoBlocks {
   padding: 5%;
+}
+
+.endElectionBtn {
+  position: relative;
+  display: flex;
+  left: 10%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 16%;
+  height: 55%;
+  background-color: #a7a4e0;
+  color: rgb(50, 50, 50);
 }

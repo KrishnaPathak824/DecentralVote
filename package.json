@@ -4,7 +4,9 @@
     "hardhat": "^2.19.4"
   },
   "dependencies": {
+    "@arction/lcjs": "^5.0.5",
     "ethers": "^5.7.2",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "npm": "^10.2.5"
   }
 }
