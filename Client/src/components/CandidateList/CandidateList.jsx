@@ -14,8 +14,9 @@ const CandidateList = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
 
-  const onRemoveClicked = (removeId) => {
-    setCandidateList(CandidateList.filter((item) => item.voterID !== removeId));
+  const onRemoveClicked = async(removeId) => {
+  //  setCandidateList(CandidateList.filter((item) => item.voterID !== removeId));
+  
   };
 
   const fetchData = async () => {
@@ -51,7 +52,8 @@ const CandidateList = () => {
       return (
         <UserItemCover
           name={item.name}
-          id={item.voterID}
+          electionId = {id}
+          id={item.voterID} 
           onRemove={onRemoveClicked}
         />
       );

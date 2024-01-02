@@ -39,6 +39,28 @@ const addCandidate = async (req, res, next) => {
 };
 
 
+const deletecandidate = async (req,res,next) =>{
+  try {
+      const {electionId} = req.params
+      const {candidateId} = req.body
+    // Update the election by pulling the candidateId from the candidates array
+    const result = await Election.updateOne(
+    
+      { _id: electionId },
+      { $pull: { candidates: candidateId } }
+    );
+
+    if (result.nModified === 0) {
+      throw new Error('Candidate not found or election not updated');
+    }
+    
+    console.log('Candidate deleted successfully');
+    
+  } catch (error) {
+    console.error('Error deleting candidate:', error.message);
+    throw error;
+  }
+}
 
 
 
@@ -89,4 +111,4 @@ const getcandidateInfo = async (req,res,next) => {
     }
   };
   
-module.exports = { addCandidate, getcandidateInfo };
+module.exports = { addCandidate, getcandidateInfo ,deletecandidate};

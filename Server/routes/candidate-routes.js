@@ -6,5 +6,6 @@ const Candidaterouter = express.Router()
 
 Candidaterouter.post('/addcandidate/:electionId',controls.addCandidate)
 Candidaterouter.get('/getcandidate/:electionId',controls.getcandidateInfo)
+Candidaterouter.patch('/deletecandidate/:electionId',controls.deletecandidate)
 
 module.exports = Candidaterouter; 
