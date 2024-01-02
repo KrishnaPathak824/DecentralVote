@@ -32,11 +32,20 @@ const VotersCandidateList = () => {
         }
       );
 
+      if (response.status === 200) {
+        setCandidateList(response.data);
+      } else {
+        setError("Data not found"); // Provide a specific error message for 404
+      }
+
       console.log("Response:", response.data);
       setCandidateList(response.data);
     } catch (error) {
-      console.error("Error fetching voter data:", error);
-      setError(error.message); // or setError('Error fetching voter data');
+      if (error.response && error.response.status === 404) {
+        setError("Data not found"); // Handle 404 error explicitly
+      } else {
+        setError("Error fetching candidate data"); // Generic error message for other errors
+      }
     }
     setIsLoading(false);
   };
@@ -75,12 +84,15 @@ const VotersCandidateList = () => {
       <Navbar />
       <div className={styles.candidateListPageCover}>
         <VoterSidebar eid={id} />
-        <div
-          className={`${styles["pageContent"]} ${
-            isLoading || candidateList.length === 0 ? styles.loading : ""
-          }`}
-        >
-          {content}
+        <div className={styles.pageContent}>
+          <h2>Candidate List</h2>
+          <div
+            className={`${styles["contentCover"]}  ${
+              isLoading ? styles.noData : ""
+            }`}
+          >
+            {content}
+          </div>
         </div>
       </div>
     </>

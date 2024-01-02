@@ -55,7 +55,7 @@ const CandidateList = () => {
     fetchData();
   }, []);
 
-  let content = <p>No Data Found</p>;
+  let content = <p>No Candidates Present Yet</p>;
 
   if (candidateList.length > 0) {
     content = candidateList.map((item) => {
@@ -86,12 +86,15 @@ const CandidateList = () => {
       <Navbar />
       <div className={styles.candidateListPageCover}>
         <Sidebar eid={id} />
-        <div
-          className={`${styles["pageContent"]} ${
-            isLoading || candidateList.length === 0 ? styles.loading : ""
-          }`}
-        >
-          {content}
+        <div className={styles.pageContent}>
+          <h2>Candidate List</h2>
+          <div
+            className={`${styles["contentCover"]} ${
+              isLoading || candidateList.length === 0 ? styles.noData : ""
+            } `}
+          >
+            {content}
+          </div>
         </div>
       </div>
     </>

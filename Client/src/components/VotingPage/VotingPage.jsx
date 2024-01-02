@@ -49,7 +49,21 @@ const VotingPage = () => {
       setVoterId(voterIdFromResponse);
 
       // Check if the voter has voted
-    } catch (error) {}
+      if (response.status === 200) {
+        setVotingList(response.data);
+      } else {
+        setError("Data not found"); // Provide a specific error message for 404
+      }
+
+      console.log("Response:", response.data);
+      setVotingList(response.data);
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        setError("Data not found"); // Handle 404 error explicitly
+      } else {
+        setError("Error fetching candidate data"); // Generic error message for other errors
+      }
+    }
   };
   useEffect(() => {
     fetchData();
