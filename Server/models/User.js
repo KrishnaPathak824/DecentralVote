@@ -15,9 +15,12 @@ const userSchema = new mongoose.Schema({
     voterID : {
       type:String,
       required: true
+    },
+    image:{
+      type:String,
+      default: ""
     }
 
- 
 });
 
 userSchema.pre("save", async function(next){

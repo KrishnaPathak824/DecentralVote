@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const port = 4000;
+const multer = require("multer")
 //const router = require( './routes/user-routes')
 //const Sellerrouter = require('./routes/seller-routes')
 const Userrouter = require('../Server/routes/ user-routes')
@@ -27,7 +28,24 @@ app.use(cors(
     
 ));
 
+const storage = multer.diskStorage({
+    destination:(req,file,cb)=> {
+        cb(null,"public/images");
+    },
+    filename: (req,file,cb) => {
+        cb(null, req.body.name)
+    }
 
+});
+
+const upload = multer({storage});
+app.post("/upload", upload.single("file") , (req,res) =>{
+    try{
+       return res.status(200).json("File uploaded successfully")
+    }catch(err){
+        console.log(err)
+    }
+})
 
 
 
