@@ -62,6 +62,7 @@ const VotersList = (props) => {
         <VoterUserItemCover
           name={item.name}
           id={item.voterID}
+          electionId={id}
           onRemove={onRemoveClicked}
         />
       );

@@ -1,9 +1,23 @@
 import styles from "./VoterUserItemCover.module.css"
-
+import axios from 'axios'
 const VoterUserItemCover = (props) => {
 
- const onRemoveVoterHandler = () => {
+ const onRemoveVoterHandler = async() => {
   props.onRemove(props.id)
+  try {
+    const voterId = props.id;
+    console.log('voterId',voterId)
+    const electionId = props.electionId;
+    console.log("aaa", electionId);
+ 
+    const response = await axios.patch(
+      `http://localhost:4000/voter/deletevoter/${electionId}`,
+      { voterId }
+    );
+  } catch (error) {
+    console.error("Error fetching voter data:", error);
+    // or setError('Error fetching voter data');
+  }
  }
 
  return(
