@@ -21,6 +21,7 @@
   position: relative;
   bottom: 5%;
   right: 15%;
+  flex-wrap: wrap;
   display: flex;
   height: 99%;
   width: 100%;

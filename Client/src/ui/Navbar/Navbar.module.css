@@ -33,11 +33,15 @@
 }
 
 .navActions {
-  /* border: 1px solid red; */
+  border: 1px solid red;
   position: relative;
   right: 5%;
   display: flex;
   align-items: center;
   width: 30%;
-  flex: 0 0 auto;
+  /* flex: 0 0 auto; */
+}
+
+.logoutBtn {
+  width: 10px;
 }

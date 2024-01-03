@@ -13,6 +13,7 @@ import { ethers } from "ethers";
 import { contractAbi, contractAddress } from "./../../utils/constants";
 import { useParams } from "react-router-dom";
 import { utils } from "ethers";
+import DoDisturbOnOutlinedIcon from "@mui/icons-material/DoDisturbOnOutlined";
 
 const ElectionPage = (props) => {
   const electionItemCtx = useContext(ElectionItemContext);
@@ -21,19 +22,21 @@ const ElectionPage = (props) => {
   const [numbers, setNumbers] = useState([]);
   const [signer, setSigner] = useState(null);
   const [candidate, setCandidate] = useState();
-  const [voteresult,setVoteresult] = useState([])
+  const [voteresult, setVoteresult] = useState([]);
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
   const [delayed, setDelayed] = useState(false);
   let voterIDs = [];
-  const[agelist , setAgelist] = useState()
+  const [agelist, setAgelist] = useState();
 
   const [userData, setUserData] = useState({
-    labels: UserData.map((data) => data.year),
+    // labels: agelist.map((data) => data.year),
+    labels: [],
     datasets: [
       {
         label: "No of Votes",
-        data: UserData.map((data) => data.votesCasted),
+        // data: agelist.map((data) => data.count),
+        data: [],
         fill: true,
         borderColor: "#fff",
         borderWidth: 2,
@@ -49,23 +52,23 @@ const ElectionPage = (props) => {
     ],
   });
 
-  const options = {
+  const [options, setOptions] = useState({
     responsive: true,
     scales: {
       x: {
         type: "category",
-        labels: UserData.map((data) => data.year),
+        labels: [],
+        beginAtZero: true,
       },
       y: {
         beginAtZero: true,
       },
     },
-
     animation: {
       onComplete: () => {
         setDelayed(true);
       },
-      duration: 1000, // Set the duration in milliseconds
+      duration: 1000,
       delay: (context) => {
         let delay = 0;
         if (context.type === "data" && context.mode === "default" && !delayed) {
@@ -74,10 +77,35 @@ const ElectionPage = (props) => {
         return delay;
       },
     },
-  };
- 
+  });
 
-  
+
+
+  useEffect(() => {
+    if (agelist && agelist.length > 0) {
+      setUserData({
+        labels: agelist.map((data) => data.year),
+        datasets: [
+          {
+            label: "No of Votes",
+            data: agelist.map((data) => data.count),
+            // Other dataset properties...
+          },
+        ],
+      });
+
+      setOptions((prevOptions) => ({
+        ...prevOptions,
+        scales: {
+          ...prevOptions.scales,
+          x: {
+            ...prevOptions.scales.x,
+            labels: agelist.map((data) => data.age),
+          },
+        },
+      }));
+    }
+  }, [agelist]);
 
   const handleClick = async () => {
     console.log("Button Clicked");
@@ -99,8 +127,6 @@ const ElectionPage = (props) => {
       console.log("error", error);
     }
   };
-
-
 
   const fetchData = async () => {
     setError(null);
@@ -126,16 +152,12 @@ const ElectionPage = (props) => {
   const fetchAge = async () => {
     setIsLoading(true);
     try {
-     
-
       const response = await axios.get(
         `http://localhost:4000/election/getagestat/${electionItemCtx.id}`,
         {
           withCredentials: true,
         }
       );
-
-   
 
       console.log("Response:", response.data);
       setAgelist(response.data);
@@ -169,13 +191,13 @@ const ElectionPage = (props) => {
         electionItemCtx.id,
         voterIDs
       );
-      
+
       console.log("xxx", result);
       const formattedVotes = result.map((candidate) => ({
         candidateId: candidate[0],
         votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
       }));
-      setVoteresult(formattedVotes)
+      setVoteresult(formattedVotes);
       console.log("Formatted Votes:", formattedVotes);
     } catch (error) {
       console.log("error", error);
@@ -208,13 +230,14 @@ const ElectionPage = (props) => {
   useEffect(() => {
     fetchData();
     initializeSigner();
+    fetchAge();
   }, []); // Run this effect only once on mount
 
   useEffect(() => {
     // This will run whenever signer changes
-   
-    handleResult()
-    fetchAge()
+
+    handleResult();
+
     const canvas = canvasRef.current;
 
     if (canvas) {
@@ -246,10 +269,11 @@ const ElectionPage = (props) => {
         chartRef.current.destroy();
       }
     };
-  }, [signer ]);
+  }, [signer]);
   return (
     <>
       <Navbar />
+      {console.log(agelist)}
       <div className={styles.electionPageCover}>
         <Sidebar eid={electionItemCtx.id} />
         <div className={styles.pageContent}>
@@ -261,19 +285,20 @@ const ElectionPage = (props) => {
               </div>
               <div className={styles.electionInfoDown}>
                 <h3>{electionItemCtx.organizer}</h3>
-                <div className={styles.electionDate}>
-                  <CalendarTodayOutlinedIcon className={styles.icon} />
-                  <p>11/30 - 12/22</p>
-                </div>
+
                 <button className={styles.endElectionBtn} onClick={handleClick}>
+                  <DoDisturbOnOutlinedIcon className={styles.icon} />
                   End Election
                 </button>
-                <button onClick={handleResult}>Results</button>
               </div>
             </div>
             <div className={styles.lineChartCover}>
               <canvas id="myChart" ref={canvasRef} className={styles.canvas} />
-              <LineChart chartData={userData} chartOptions={options} result = {agelist}  />
+              <LineChart
+                chartData={userData}
+                chartOptions={options}
+                result={agelist}
+              />
             </div>
           </div>
           <div className={styles.pageContentRight}>

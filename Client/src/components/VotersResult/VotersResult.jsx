@@ -21,6 +21,8 @@ const VotersResults = (props) => {
   const [candidate, setCandidate] = useState();
   const [voteresult,setVoteresult] = useState([])
   let voterIDs = [];
+  
+
 
   const fetchData = async () => {
     setError(null);
@@ -118,7 +120,7 @@ const VotersResults = (props) => {
     <>
       <Navbar />
       <div className={styles.electionResultCover}>
-        <VoterSidebar />
+        <VoterSidebar eid ={electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Overview</h2>

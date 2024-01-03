@@ -39,9 +39,9 @@ const Navbar = () => {
         </Link>
 
         <p>
-          <Link>
-            <p><button onClick = {handleClick}>Log Out</button></p>
-          </Link>
+         
+            <button onClick = {handleClick} classname = {styles.logoutBtn}>Log Out</button>
+         
         </p>
       </div>
     </div>
