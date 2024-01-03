@@ -6,7 +6,7 @@ import { myElectionData } from "./myElectionData";
 import ProfilePartElecItem from "../../ui/ProfilePartItem/ProfilePartElecItem";
 import { participatedElections } from "./participatedElections";
 import ProfileElectionItem from "../../ui/ProfileElectionItem/ProfileElectionItem";
-import { InputText } from "primereact/inputtext";
+//import { InputText } from "primereact/inputtext";
 import axios from "axios";
 const Profile = () => {
   const [profile, setProfile] = useState();
