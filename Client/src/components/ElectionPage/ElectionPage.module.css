@@ -1,6 +1,7 @@
 .electionPageCover {
   height: 90vh;
   display: flex;
+  margin-left: 25%; /* Adjusting for the fixed sidebar */
 }
 
 .pageContent {
@@ -20,11 +21,12 @@
 .pageContentRight {
   display: flex;
   position: relative;
-  right: 1%;
   flex-direction: column;
   flex: 25%;
   background-color: rgb(225, 226, 226);
   border-radius: 15px;
+  right: 3%;
+  height: 85vh;
 }
 
 .pageContent h2 {
@@ -41,6 +43,7 @@
   width: 90%;
   height: 21%;
   margin: auto;
+  right: 5%;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -85,10 +88,11 @@
 
 .lineChartCover {
   position: relative;
-  height: 60vh; /* Adjust the height as needed */
+  height: 55vh; /* Adjust the height as needed */
   margin: auto;
   border-radius: 15px;
   width: 90%;
+  right: 5%;
   bottom: 2%;
   background-color: rgb(225, 226, 226);
 }
@@ -104,6 +108,7 @@
 
 .infoBlocks {
   padding: 5%;
+  position: relative;
 }
 
 .endElectionBtn {

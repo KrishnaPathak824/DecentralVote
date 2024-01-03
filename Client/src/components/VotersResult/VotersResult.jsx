@@ -130,7 +130,7 @@ const VotersResults = (props) => {
         <VoterSidebar eid ={electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
-            <h2>Overview</h2>
+            <h2>Results</h2>
             <div className={styles.electionInfo}>
               <div className={styles.electionInfoUp}>
                 <h2>{electionItemCtx.title}</h2>

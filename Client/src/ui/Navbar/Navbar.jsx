@@ -40,7 +40,7 @@ const Navbar = () => {
 
         <p>
          
-            <button onClick = {handleClick} classname = {styles.logoutBtn}>Log Out</button>
+            <button onClick = {handleClick} className = {styles.logoutBtn}>Log Out</button>
          
         </p>
       </div>
