@@ -28,6 +28,7 @@ const ElectionPage = (props) => {
   const [delayed, setDelayed] = useState(false);
   let voterIDs = [];
   const [agelist, setAgelist] = useState();
+  const [totalvotes,setTotalvotes] = useState()
 
   const [userData, setUserData] = useState({
     // labels: agelist.map((data) => data.year),
@@ -185,6 +186,7 @@ const ElectionPage = (props) => {
         contractAbi,
         signer
       );
+     
       voterIDs = candidateresponse.data.map((item) => item.voterID);
       console.log("aa", voterIDs);
       const result = await contract.getAllCandidateVotes(
@@ -193,12 +195,23 @@ const ElectionPage = (props) => {
       );
 
       console.log("xxx", result);
+     
       const formattedVotes = result.map((candidate) => ({
         candidateId: candidate[0],
         votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
       }));
+
+
       setVoteresult(formattedVotes);
       console.log("Formatted Votes:", formattedVotes);
+      const totalVotes = formattedVotes.reduce((accumulator, currentItem) => {
+        // Convert 'votes' to a number and add to the accumulator
+        const votes = parseInt(currentItem.votes, 10) || 0; // Use 0 if 'votes' is not a valid number
+        return accumulator + votes;
+      }, 0);
+      
+      console.log('Total Votes:', totalVotes);
+      setTotalvotes(totalVotes)
     } catch (error) {
       console.log("error", error);
     }
@@ -303,7 +316,7 @@ const ElectionPage = (props) => {
           </div>
           <div className={styles.pageContentRight}>
             <div className={styles.infoBlocks}>
-              <ElectionPageData num={numbers} />
+              <ElectionPageData num={numbers} totalvotes = {totalvotes} />
             </div>
           </div>
         </div>
