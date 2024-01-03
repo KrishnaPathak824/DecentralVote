@@ -1,11 +1,12 @@
 import styles from "./Profile.module.css";
 import GeneralSidebar from "../../ui/GeneralSidebar/GeneralSidebar";
 import Navbar from "../../ui/Navbar/Navbar";
-import { react, useState, useCallback, useEffect } from "react";
+import { react, useState, useCallback, useEffect, useRef } from "react";
 import { myElectionData } from "./myElectionData";
 import ProfilePartElecItem from "../../ui/ProfilePartItem/ProfilePartElecItem";
 import { participatedElections } from "./participatedElections";
 import ProfileElectionItem from "../../ui/ProfileElectionItem/ProfileElectionItem";
+import { InputText } from "primereact/inputtext";
 import axios from "axios";
 const Profile = () => {
   const [profile, setProfile] = useState();
@@ -13,6 +14,8 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [elections, setElections] = useState();
   const [voterelections, setVoterelections] = useState();
+  const [image, setImage] = useState("");
+  const inputRef = useRef(null);
 
   const fetchData = async () => {
     setError(null);
@@ -102,6 +105,19 @@ const Profile = () => {
       );
     });
   }
+
+  console.log(image);
+
+  const onHandleImageClick = () => {
+    inputRef.current.click();
+  };
+
+  const onHandleImageChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+    setImage(event.target.files[0]);
+  };
+
   return (
     <>
       <Navbar />
@@ -110,9 +126,28 @@ const Profile = () => {
         <div className={styles.pageContent}>
           <h2>Dashboard</h2>
           <div className={styles.pageUpContent}>
-            <div className={styles.imageCover}>
-              <img src="\images\add-candidate-image.png" alt="" />
+            <div className={styles.imageCover} onClick={onHandleImageClick}>
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt=""
+                  className={styles.imageAfter}
+                />
+              ) : (
+                <img
+                  src="\images\add-candidate-image.png"
+                  alt=""
+                  className={styles.imageBefore}
+                />
+              )}
+              <input
+                type="file"
+                ref={inputRef}
+                style={{ display: "none" }}
+                onChange={onHandleImageChange}
+              />
             </div>
+
             <div className={styles.userInfo}>
               {profile && (
                 <>
@@ -121,6 +156,7 @@ const Profile = () => {
                   <h4>Voter ID: {profile.voterID}</h4>
                 </>
               )}
+              <button className={styles.uploadBtn}>Upload</button>
             </div>
           </div>
           <div className={styles.pageDownContent}>

@@ -4,7 +4,6 @@
 }
 
 .pageContent {
-
   height: 90vh;
   width: 100%;
   display: flex;
@@ -34,6 +33,7 @@
 
 .imageCover {
   position: relative;
+
   margin: 10px;
   border-radius: 50%;
   height: 100%;
@@ -52,12 +52,20 @@
   }
 }
 
-.imageCover img {
+.imageBefore {
   height: 101%;
   position: relative;
   right: 10%;
   width: 120%;
+  border-radius: 50%;
   object-fit: cover;
+}
+
+.imageAfter {
+  width: 230px; /* Set a fixed width */
+  height: 230px; /* Set a fixed height */
+  object-fit: cover;
+  border-radius: 50%; /* Maintain circular shape */
 }
 
 .userInfo {
@@ -71,6 +79,22 @@
   height: 90%;
   flex-direction: column;
   box-shadow: 0px 10px 20px rgba(134, 134, 134, 0.25);
+}
+
+.uploadBtn {
+  position: relative;
+  width: 20%;
+  min-height: 15%;
+  bottom: 25%;
+  left: 5%;
+  color: #282c34;
+  background-color: #a5a2d8;
+  transition: background-color 1s;
+}
+
+.uploadBtn:hover {
+  cursor: pointer;
+  background-color: #918fc3;
 }
 
 .userInfo h1 {
