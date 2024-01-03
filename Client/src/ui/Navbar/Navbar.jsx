@@ -1,6 +1,21 @@
 import React from "react";
 import styles from "./Navbar.module.css";
 import { Link, Links } from "react-router-dom";
+import axios from "axios";
+
+const handleClick = async()=>{
+  try {
+    const response = await axios.post("http://localhost:4000/user/logout" , {}, {
+      withCredentials:true
+    });
+    
+   localStorage.clear()
+    window.location.href = "/";
+  } catch (error) {
+    console.log(error);
+  }
+  console.log('logout')
+}
 
 const Navbar = () => {
   return (
@@ -24,8 +39,8 @@ const Navbar = () => {
         </Link>
 
         <p>
-          <Link to="/">
-            <p>Log Out</p>
+          <Link>
+            <p><button onClick = {handleClick}>Log Out</button></p>
           </Link>
         </p>
       </div>

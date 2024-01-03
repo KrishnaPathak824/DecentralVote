@@ -21,11 +21,13 @@ const ElectionPage = (props) => {
   const [numbers, setNumbers] = useState([]);
   const [signer, setSigner] = useState(null);
   const [candidate, setCandidate] = useState();
-
+  const [voteresult,setVoteresult] = useState([])
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
   const [delayed, setDelayed] = useState(false);
   let voterIDs = [];
+  const[agelist , setAgelist] = useState()
+
   const [userData, setUserData] = useState({
     labels: UserData.map((data) => data.year),
     datasets: [
@@ -73,6 +75,9 @@ const ElectionPage = (props) => {
       },
     },
   };
+ 
+
+  
 
   const handleClick = async () => {
     console.log("Button Clicked");
@@ -95,6 +100,8 @@ const ElectionPage = (props) => {
     }
   };
 
+
+
   const fetchData = async () => {
     setError(null);
     setIsLoading(true);
@@ -114,6 +121,29 @@ const ElectionPage = (props) => {
     } catch (error) {
       console.log("error", error);
     }
+  };
+
+  const fetchAge = async () => {
+    setIsLoading(true);
+    try {
+     
+
+      const response = await axios.get(
+        `http://localhost:4000/election/getagestat/${electionItemCtx.id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+   
+
+      console.log("Response:", response.data);
+      setAgelist(response.data);
+    } catch (error) {
+      console.error("Error fetching voter data:", error);
+      setError(error.message); // or setError('Error fetching voter data');
+    }
+    setIsLoading(false);
   };
 
   const handleResult = async () => {
@@ -139,12 +169,13 @@ const ElectionPage = (props) => {
         electionItemCtx.id,
         voterIDs
       );
+      
       console.log("xxx", result);
       const formattedVotes = result.map((candidate) => ({
         candidateId: candidate[0],
         votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
       }));
-
+      setVoteresult(formattedVotes)
       console.log("Formatted Votes:", formattedVotes);
     } catch (error) {
       console.log("error", error);
@@ -154,20 +185,17 @@ const ElectionPage = (props) => {
   const initializeSigner = async () => {
     try {
       // Connect to an Ethereum node or provider
-
       const provider = new ethers.providers.JsonRpcProvider(
         "http://127.0.0.1:8545"
       );
-
-      // You can also use other providers like WalletConnectProvider, etc.
 
       // Get the signer using a private key or other authentication method
       const privateKey =
         "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
       const wallet = new ethers.Wallet(privateKey, provider);
-      console.log("wallet", wallet);
+
+      // Set the signer in the state
       setSigner(wallet);
-      console.log("signer", signer);
     } catch (error) {
       console.error("Error initializing signer:", error);
       setError(
@@ -176,10 +204,17 @@ const ElectionPage = (props) => {
     }
   };
 
+  // Call initializeSigner when the component renders
   useEffect(() => {
     fetchData();
     initializeSigner();
+  }, []); // Run this effect only once on mount
 
+  useEffect(() => {
+    // This will run whenever signer changes
+   
+    handleResult()
+    fetchAge()
     const canvas = canvasRef.current;
 
     if (canvas) {
@@ -211,8 +246,7 @@ const ElectionPage = (props) => {
         chartRef.current.destroy();
       }
     };
-  }, []);
-
+  }, [signer ]);
   return (
     <>
       <Navbar />
@@ -239,7 +273,7 @@ const ElectionPage = (props) => {
             </div>
             <div className={styles.lineChartCover}>
               <canvas id="myChart" ref={canvasRef} className={styles.canvas} />
-              <LineChart chartData={userData} chartOptions={options} />
+              <LineChart chartData={userData} chartOptions={options} result = {agelist}  />
             </div>
           </div>
           <div className={styles.pageContentRight}>

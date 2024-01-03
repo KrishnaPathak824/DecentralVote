@@ -7,5 +7,6 @@ const Userrouter = express.Router()
 Userrouter.post('/signup',controls.register)
 Userrouter.post('/login' ,  controls.login)
 Userrouter.get('/profile',auth, controls.profile)
+Userrouter.post('/logout', controls.logout)
 
 module.exports = Userrouter; 

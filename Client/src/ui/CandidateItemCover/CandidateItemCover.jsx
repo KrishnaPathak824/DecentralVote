@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom";
 import { utils } from "ethers";
 
 const CandidateItemCover = (props) => {
-  const [hasVoted, setHasVoted] = useState(false);
+  const [isVoted, setIsVoted] = useState();
+  const [hasVoted,setHasVoted] = useState()
   const [error, setError] = useState(null);
   const [signer, setSigner] = useState(null);
   const { electionid } = useParams();
@@ -15,7 +16,8 @@ const CandidateItemCover = (props) => {
   const [candidateIds, setCandidateIds] = useState([]);
   useEffect(() => {
     // console.log('aa',voterIDs)
-
+    setHasVoted(props.onHasVoted)
+   
     // Your array to store candidate data
 
     const initializeSigner = async () => {
@@ -42,11 +44,11 @@ const CandidateItemCover = (props) => {
     };
 
     initializeSigner();
-  }, []);
+  }, [props.onHasVoted]);
 
   const onVoteHandler = async () => {
     // Update the local state to reflect that the user has voted
-    setHasVoted(true);
+    setIsVoted(true);
 
     props.onVoted();
 
@@ -73,8 +75,8 @@ const CandidateItemCover = (props) => {
         console.log("Election has already ended. Voting is not allowed.");
       } else {
         // Proceed with the voting logic
-        const userHasVoted = await contract.hasUserVoted(props.eid, props.voterid);
-        if (userHasVoted) {
+        const userisVoted = await contract.hasUserVoted(props.eid, props.voterid);
+        if (userisVoted) {
           console.log("User has already voted.");
           alert("User has already voted.")
         
@@ -108,7 +110,7 @@ const CandidateItemCover = (props) => {
         
         console.log('voted')
         // Update the local state to reflect that the user has voted
-        setHasVoted(true);
+        setIsVoted(true);
       }
     
    
@@ -119,6 +121,7 @@ const CandidateItemCover = (props) => {
         "An error occurred while processing your vote. Please try again."
       );
     }
+  
   };
 
   return (
@@ -131,12 +134,13 @@ const CandidateItemCover = (props) => {
           <h3>{props.name}</h3>
           <h4 className={styles.description}>{props.id}</h4>
           {error && <p className={styles.error}>{error}</p>}
+          {console.log('vote',hasVoted)}
           <button
-            className={`${styles["voteBtn"]} ${hasVoted ? styles.voted : ""}`}
+            className={`${styles["voteBtn"]} ${isVoted || hasVoted ? styles.voted : ""}`}
             onClick={onVoteHandler}
-            disabled={hasVoted}
+            disabled={isVoted || hasVoted}
           >
-            {hasVoted ? "Voted" : "Vote"}
+            {isVoted || hasVoted ? "Voted" : "Vote"}
           </button>
         </div>
       </div>

@@ -39,10 +39,19 @@ const register = async (req, res) => {
       });
   
       // Save the user to the database
+      const token = await user.generateAuthToken();
+      console.log('token generated')
+      await res.cookie('user_token', token , {
+        httpOnly: true,
+        secure:false,
+        maxAge:60000000
+     })
       await user.save();
   
       console.log('User registered');
-      const token = await user.generateAuthToken();
+     console.log('user',user)
+
+   
       res.status(201).send({ user, token });
     } catch (err) {
       console.error(err);
@@ -68,7 +77,7 @@ const login = async(req,res)=>{
      res.cookie('user_token', token , {
         httpOnly: true,
         secure:false,
-        maxage:60000000
+        maxAge:60000000
      })
         res.send({ userId: user.id });
         

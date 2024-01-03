@@ -3,6 +3,7 @@ const express = require("express");
 const Election = require ("../models/Election")
 const Cookies = require('js-cookie')
 const jwt = require("jsonwebtoken");
+const User = require('../models/User')
 
 const bcrypt = require('bcrypt')
 
@@ -93,7 +94,59 @@ const electiondata = async(req,res)=>{
   }
 }
 
+const getAgestats = async (req, res) => {
+  const { electionId } = req.params;
+
+  try {
+    // Find the election by ID
+    const election = await Election.findById(electionId);
+
+    if (!election) {
+      return res.status(404).send({ error: 'Election not found' });
+    }
+
+    // Get the array of voter IDs from the election
+    const voterIds = election.voters;
+
+    // Find users with matching voter IDs and project the 'age' field
+    const users = await User.find({ voterID: { $in: voterIds } }, { _id: 0, voterID: 1, age: 1 });
+
+    // Print debug information
+  
+
+    // Generate an object containing the ages and their frequency
+    const ageStats = users.reduce((acc, user) => {
+    
+      const age = user && user.age !== undefined ? user.age.toString() : 'Unknown';
+      acc[age] = (acc[age] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Convert the object to an array of objects
+    const result = Object.entries(ageStats).map(([age, count]) => ({
+      age: age === 'Unknown' ? undefined : parseInt(age),
+      count,
+    }));
+
+    console.log('Age Stats:', result);
+
+    res.send(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+    
 
 
 
-module.exports = {electioncreation,electionlist , voterelectionlist, electiondata}
+
+
+
+
+
+
+
+
+module.exports = {electioncreation,electionlist , voterelectionlist, electiondata , getAgestats}

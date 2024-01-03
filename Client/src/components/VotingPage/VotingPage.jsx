@@ -9,13 +9,20 @@ import { contractAbi, contractAddress } from "./../../utils/constants";
 const { ethers } = require("ethers");
 
 const VotingPage = () => {
+ 
   const [votingList, setVotingList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [signer, setSigner] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [voterId, setVoterId] = useState(); // Store the voter's unique identifier
   const { id } = useParams();
 
+  const contract = new ethers.Contract(
+    contractAddress,
+    contractAbi,
+    signer
+  );
   // Replace with your contract ABI
 
   const fetchData = async () => {
@@ -65,9 +72,68 @@ const VotingPage = () => {
       }
     }
   };
+
+  const initializeSigner = async () => {
+    try {
+      // Connect to an Ethereum node or provider
+      const provider = new ethers.providers.JsonRpcProvider(
+        "http://127.0.0.1:8545"
+      );
+
+      // You can also use other providers like WalletConnectProvider, etc.
+
+      // Get the signer using a private key or other authentication method
+      const privateKey =
+        "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+      const wallet = new ethers.Wallet(privateKey, provider);
+
+      setSigner(wallet);
+    } catch (error) {
+      console.error("Error initializing signer:", error);
+      setError(
+        "Failed to initialize signer. Please check your connection or private key."
+      );
+    }
+  };
+
+  const isVoted = async()=>{
+    try {
+     
+      console.log(signer)
+
+      const userHasVoted = await contract.hasUserVoted(id,voterId);
+  
+      if(userHasVoted){
+        console.log('user has already voted')
+        setHasVoted(true)
+        console.log('xyxyx')
+      }
+      console.log('Updated hasVoted:', hasVoted);
+    
+      console.log('aaa',hasVoted)
+    } catch (error) {
+      console.log('err',error)
+    }
+
+ 
+  }
+
   useEffect(() => {
+
     fetchData();
+    initializeSigner()
+    
   }, []);
+
+  useEffect(() => {
+    // Call isVoted when both signer and voterId are available
+    if (signer && voterId) {
+      isVoted();
+    }
+  }, [signer , voterId]);
+
+
+
 
   const onVoteClicked = async () => {
     // Trigger a transaction to vote for the selected candidate
@@ -85,6 +151,7 @@ const VotingPage = () => {
         <CandidateItemCover
           key={item.id}
           candidate={votingList}
+          onHasVoted = {hasVoted}
           name={item.name}
           eid={id}
           id={item.voterID}

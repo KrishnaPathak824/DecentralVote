@@ -7,6 +7,7 @@ const ProfileElectionItem = (props) => {
   const profElectionItemCtx = useContext(ElectionItemContext);
 
   const onElectionItemClicked = () => {
+    localStorage.setItem('electionid',props.id)
     profElectionItemCtx.setItemId(props.id);
     profElectionItemCtx.setItemTitle(props.title);
     profElectionItemCtx.setItemOrganizer(props.organizer);

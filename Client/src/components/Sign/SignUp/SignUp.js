@@ -74,6 +74,8 @@ const SignUp = (props) => {
     const newUserData = {
       username: enteredUsername,
       password: enteredPassword,
+      age:enteredAge,
+      address:enteredAddress
     };
 
     onSubmitNewUser(newUserData);
@@ -87,12 +89,16 @@ const SignUp = (props) => {
   const onSubmitNewUser = async (event) => {
     const name = enteredUsername;
     const password = enteredNewPassword;
+    const age = enteredAge;
+    const address = enteredAddress;
 
     try {
       const response = await axios.post("http://localhost:4000/user/signup", {
         name,
         password,
-      });
+        age, 
+        address
+      }, {withCredentials:true});
 
       window.location.href = "/landing-page";
     } catch (err) {

@@ -7,13 +7,21 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import axios from "axios";
 import { useState, useRef, useEffect, useContext } from "react";
 import ElectionItemContext from "../../contexts/electionItem-context";
+import { ethers } from "ethers";
+import { contractAbi, contractAddress } from "./../../utils/constants";
+import { useParams } from "react-router-dom";
+import { utils } from "ethers";
+
 
 const Results = (props) => {
   const electionItemCtx = useContext(ElectionItemContext);
   const [numbers, setNumbers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [signer, setSigner] = useState(null);
+  const [candidate, setCandidate] = useState();
+  const [voteresult,setVoteresult] = useState([])
+  let voterIDs = [];
   const fetchData = async () => {
     setError(null);
     setIsLoading(true);
@@ -35,15 +43,84 @@ const Results = (props) => {
     }
   };
 
+
+  const handleResult = async () => {
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const candidateresponse = await axios.get(
+        `http://localhost:4000/candidate/getcandidate/${electionItemCtx.id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractAbi,
+        signer
+      );
+      voterIDs = candidateresponse.data.map((item) => item.voterID);
+    
+      const result = await contract.getAllCandidateVotes(
+        electionItemCtx.id,
+        voterIDs
+      );
+      
+      
+      const formattedVotes = result.map((candidate) => ({
+        candidateId: candidate[0],
+        votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
+      }));
+      setVoteresult(formattedVotes)
+  
+     
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const initializeSigner = async () => {
+    try {
+      // Connect to an Ethereum node or provider
+      const provider = new ethers.providers.JsonRpcProvider(
+        "http://127.0.0.1:8545"
+      );
+
+      // Get the signer using a private key or other authentication method
+      const privateKey =
+        "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+      const wallet = new ethers.Wallet(privateKey, provider);
+
+      // Set the signer in the state
+      setSigner(wallet);
+    } catch (error) {
+      console.error("Error initializing signer:", error);
+      setError(
+        "Failed to initialize signer. Please check your connection or private key."
+      );
+    }
+  };
+
   useEffect(() => {
+   
     fetchData();
+    initializeSigner()
   }, []);
+
+  useEffect(() => {
+   
+    handleResult()
+  }, [signer]);
+
 
   return (
     <>
       <Navbar />
+   
       <div className={styles.electionResultCover}>
-        <Sidebar />
+        <Sidebar  eid = {electionItemCtx.id}/>
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Results</h2>
@@ -60,7 +137,7 @@ const Results = (props) => {
               </div>
             </div>
             <div className={styles.pieChartCover}>
-              <Chart id="chart" />
+              <Chart id="chart" result = {voteresult} />
             </div>
           </div>
           <div className={styles.pageContentRight}>
