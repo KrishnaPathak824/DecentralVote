@@ -129,7 +129,7 @@ const Results = (props) => {
       <Navbar />
 
       <div className={styles.electionResultCover}>
-        <Sidebar eid={electionItemCtx.id} />
+        <Sidebar eid={electionItemCtx.electionId || electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Results</h2>
@@ -141,6 +141,7 @@ const Results = (props) => {
                 <h3>{electionItemCtx.organizer}</h3>
                 <div className={styles.electionDate}>
                   <CalendarTodayOutlinedIcon className={styles.icon} />
+                  {console.log('date',electionItemCtx.startDate)}
                   <p>{electionItemCtx.startDate}</p>
                 </div>
               </div>

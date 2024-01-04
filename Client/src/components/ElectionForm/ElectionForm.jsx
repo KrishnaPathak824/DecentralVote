@@ -158,11 +158,11 @@ const ElectionForm = () => {
                 </div>
 
                 <div className={styles.formDate}>
-                  <label htmlFor="start-date">Start Date</label>
+                  <label htmlFor="end-date">End Date</label>
                   <input
                     className={styles.dateInput}
                     type="date"
-                    id="start-date"
+                    id="end-date"
                     onChange={endDateInputHandler}
                     onBlur={endDateBlurHandler}
                     value={enteredEndDate}

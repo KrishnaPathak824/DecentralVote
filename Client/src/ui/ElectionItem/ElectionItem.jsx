@@ -43,14 +43,13 @@ const ElectionItem = (props) => {
           </div>
           <div className={styles.downComponent}>
             <h4>{props.organizer}</h4>
-            <h5 className={styles.startDate}>{props.sDate}</h5>
-            <h5 className={styles.endDate}>{props.eDate}</h5>
+            <h5 className={styles.startDate}>{props.sDate.split("T")[0]}</h5>
+            <h5 className={styles.endDate}>{props.eDate.split("T")[0]}</h5>
           </div>
         </div>
 
         <div className={styles.itemActions}>
-          <EditOutlinedIcon />
-          <DeleteOutlineOutlinedIcon />
+         
         </div>
       </div>
     </Link>

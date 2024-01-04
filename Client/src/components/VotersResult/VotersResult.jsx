@@ -130,7 +130,7 @@ const VotersResults = (props) => {
     <>
       <Navbar />
       <div className={styles.electionResultCover}>
-        <VoterSidebar eid={electionItemCtx.id} />
+        <VoterSidebar eid={electionItemCtx.id || electionItemCtx.electionId} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Results</h2>
@@ -142,7 +142,7 @@ const VotersResults = (props) => {
                 <h3>{electionItemCtx.organizer}</h3>
                 <div className={styles.electionDate}>
                   <CalendarTodayOutlinedIcon className={styles.icon} />
-                  <p>11/30 - 12/22</p>
+                  <p>{electionItemCtx.startDate.split("T")[0]} to {electionItemCtx.endDate.split("T")[0]}</p>
                 </div>
               </div>
             </div>

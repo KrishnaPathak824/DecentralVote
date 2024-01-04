@@ -156,7 +156,6 @@ const Profile = () => {
                   <h4>Voter ID: {profile.voterID}</h4>
                 </>
               )}
-              <button className={styles.uploadBtn}>Upload</button>
             </div>
           </div>
           <div className={styles.pageDownContent}>

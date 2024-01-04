@@ -293,7 +293,7 @@ const VoterElectionPage = (props) => {
                 <h3>{electionItemCtx.organizer}</h3>
                 <div className={styles.electionDate}>
                   <CalendarTodayOutlinedIcon className={styles.icon} />
-                  <p>11/30 - 12/22</p>
+                  <p>{electionItemCtx.startDate.split("T")[0]} to {electionItemCtx.endDate.split("T")[0]}</p>
                 </div>
               </div>
             </div>

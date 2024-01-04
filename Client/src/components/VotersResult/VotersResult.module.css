@@ -83,19 +83,21 @@
   align-items: center;
   justify-content: center;
   right: 6%;
-
+  font-weight: bold;
   border-radius: 12px;
-  width: 25%;
+  color:#4d5462;
+  width: 32%;
   height: 55%;
   background-color: #a7a4e0;
-  color: rgb(50, 50, 50);
+ 
 }
 
 .icon {
   font-size: 18px !important;
   position: relative;
-  right: 8%;
+  right: 5%;
   opacity: 80%;
+  font-weight: bold !important;
 }
 
 .pieChartCover {

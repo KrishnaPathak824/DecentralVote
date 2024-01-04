@@ -32,20 +32,19 @@ const VotersList = (props) => {
       );
 
       if (response.status === 200) {
-        setVotersList(response.data);
+        setvotersList(response.data);
       } else {
-        if (error.response && error.response.status === 404) {
-          setError("Data not found"); // Handle 404 error explicitly
-        } else {
-          setError("Error fetching candidate data"); // Generic error message for other errors
-        }
+        setError("Data not found"); // Provide a specific error message for 404
       }
 
       console.log("Response:", response.data);
       setVotersList(response.data);
     } catch (error) {
-      console.error("Error fetching voter data:", error);
-      setError(error.message); // or setError('Error fetching voter data');
+      if (error.response && error.response.status === 404) {
+        setError("Data not found"); // Handle 404 error explicitly
+      } else {
+        setError("Error fetching candidate data"); // Generic error message for other errors
+      };
     }
     setIsLoading(false);
   };
