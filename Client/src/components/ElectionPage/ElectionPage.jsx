@@ -288,7 +288,7 @@ const ElectionPage = (props) => {
       <Navbar />
       {console.log(agelist)}
       <div className={styles.electionPageCover}>
-        <Sidebar eid={electionItemCtx.id} />
+        <Sidebar eid={electionItemCtx.electionId} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Overview</h2>
