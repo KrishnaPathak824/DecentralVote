@@ -12,7 +12,6 @@ import { contractAbi, contractAddress } from "./../../utils/constants";
 import { useParams } from "react-router-dom";
 import { utils } from "ethers";
 
-
 const Results = (props) => {
   const electionItemCtx = useContext(ElectionItemContext);
   const [numbers, setNumbers] = useState([]);
@@ -20,7 +19,7 @@ const Results = (props) => {
   const [error, setError] = useState(null);
   const [signer, setSigner] = useState(null);
   const [candidate, setCandidate] = useState();
-  const [voteresult,setVoteresult] = useState([])
+  const [voteresult, setVoteresult] = useState([]);
   let voterIDs = [];
   const fetchData = async () => {
     setError(null);
@@ -43,7 +42,6 @@ const Results = (props) => {
     }
   };
 
-
   const handleResult = async () => {
     setError(null);
     setIsLoading(true);
@@ -62,20 +60,17 @@ const Results = (props) => {
         signer
       );
       voterIDs = candidateresponse.data.map((item) => item.voterID);
-    
+
       const result = await contract.getAllCandidateVotes(
         electionItemCtx.id,
         voterIDs
       );
-      
-      
+
       const formattedVotes = result.map((candidate) => ({
         candidateId: candidate[0],
         votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
       }));
-      setVoteresult(formattedVotes)
-  
-     
+      setVoteresult(formattedVotes);
     } catch (error) {
       console.log("error", error);
     }
@@ -104,23 +99,27 @@ const Results = (props) => {
   };
 
   useEffect(() => {
-   
     fetchData();
-    initializeSigner()
+    initializeSigner();
   }, []);
 
   useEffect(() => {
-   
-    handleResult()
+    handleResult();
   }, [signer]);
 
+  let content = <p>No Votes has been Casted Yet</p>;
+
+  if (voteresult.length !== 0) {
+    content = <Chart id="chart" result={voteresult} />;
+  }
+  console.log(voteresult);
 
   return (
     <>
       <Navbar />
-   
+
       <div className={styles.electionResultCover}>
-        <Sidebar  eid = {electionItemCtx.id}/>
+        <Sidebar eid={electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Results</h2>
@@ -132,12 +131,16 @@ const Results = (props) => {
                 <h3>{electionItemCtx.organizer}</h3>
                 <div className={styles.electionDate}>
                   <CalendarTodayOutlinedIcon className={styles.icon} />
-                  <p>11/30 - 12/22</p>
+                  <p>{electionItemCtx.startDate}</p>
                 </div>
               </div>
             </div>
-            <div className={styles.pieChartCover}>
-              <Chart id="chart" result = {voteresult} />
+            <div
+              className={`${styles["pieChartCover"]}  ${
+                voteresult.length === 0 ? styles.empty : ""
+              }`}
+            >
+              {content}
             </div>
           </div>
           <div className={styles.pageContentRight}>

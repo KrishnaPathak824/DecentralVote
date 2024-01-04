@@ -19,10 +19,8 @@ const VotersResults = (props) => {
   const [error, setError] = useState(null);
   const [signer, setSigner] = useState(null);
   const [candidate, setCandidate] = useState();
-  const [voteresult,setVoteresult] = useState([])
+  const [voteresult, setVoteresult] = useState([]);
   let voterIDs = [];
-  
-
 
   const fetchData = async () => {
     setError(null);
@@ -63,20 +61,17 @@ const VotersResults = (props) => {
         signer
       );
       voterIDs = candidateresponse.data.map((item) => item.voterID);
-    
+
       const result = await contract.getAllCandidateVotes(
         electionItemCtx.id,
         voterIDs
       );
-      
-      
+
       const formattedVotes = result.map((candidate) => ({
         candidateId: candidate[0],
         votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
       }));
-      setVoteresult(formattedVotes)
-  
-     
+      setVoteresult(formattedVotes);
     } catch (error) {
       console.log("error", error);
     }
@@ -105,22 +100,26 @@ const VotersResults = (props) => {
   };
 
   useEffect(() => {
-   
     fetchData();
-    initializeSigner()
+    initializeSigner();
   }, []);
 
   useEffect(() => {
-   
-    handleResult()
+    handleResult();
   }, [signer]);
 
+  let content = <p>No Votes has been Casted Yet</p>;
+
+  if (voteresult.length !== 0) {
+    content = <Chart id="chart" result={voteresult} />;
+  }
+  console.log(voteresult);
 
   return (
     <>
       <Navbar />
       <div className={styles.electionResultCover}>
-        <VoterSidebar eid ={electionItemCtx.id} />
+        <VoterSidebar eid={electionItemCtx.id} />
         <div className={styles.pageContent}>
           <div className={styles.pageContentLeft}>
             <h2>Results</h2>
@@ -136,8 +135,12 @@ const VotersResults = (props) => {
                 </div>
               </div>
             </div>
-            <div className={styles.pieChartCover}>
-              <Chart id="chart" result = {voteresult} />
+            <div
+              className={`${styles["pieChartCover"]}  ${
+                voteresult.length === 0 ? styles.empty : ""
+              }`}
+            >
+              {content}
             </div>
           </div>
           <div className={styles.pageContentRight}>

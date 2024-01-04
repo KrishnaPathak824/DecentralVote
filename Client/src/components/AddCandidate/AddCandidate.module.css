@@ -1,6 +1,7 @@
 .candidatePageCover {
   height: 90vh;
   display: flex;
+  margin-left: 25%; /* Adjusting for the fixed sidebar */
 }
 
 .pageContent {
@@ -9,6 +10,7 @@
   display: flex;
   position: relative;
   bottom: 5%;
+  right: 6%;
   flex-direction: column;
   /* border: 1px solid red; */
 }

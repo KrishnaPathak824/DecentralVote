@@ -1,15 +1,15 @@
 .candidateListPageCover {
   height: 90vh;
   display: flex;
+  margin-left: 25%; /* Adjusting for the fixed sidebar */
 }
 
 .pageContent {
-  width: 100%;
-  display: flex;
+  width: 95%; /* Adjusting the width for content */
   padding: 5%;
+  display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  /* justify-content: space-evenly; */
 }
 
 .pageContent.loading {
@@ -20,9 +20,10 @@
 .contentCover {
   position: relative;
   bottom: 5%;
-  right: 20%;
+  right: 25%; /* Adjusting alignment */
+  flex-wrap: wrap;
   display: flex;
-  height: 99%;
+  height: 100%; /* Full height */
   width: 100%;
 }
 

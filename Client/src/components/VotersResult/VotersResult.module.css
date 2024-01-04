@@ -108,6 +108,20 @@
   background-color: rgb(225, 226, 226);
 }
 
+.pieChartCover.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pieChartCover.empty p {
+  border-radius: 22px;
+  padding: 15px;
+  background-color: #a7a4e0;
+  color: #4d5462;
+  font-weight: bold;
+}
+
 .canvas,
 .LineChart {
   position: absolute;

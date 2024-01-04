@@ -2,6 +2,7 @@ import styles from "./VotersCandidateList.module.css";
 import Navbar from "../../ui/Navbar/Navbar";
 import VoterSidebar from "../../ui/VoterSidebar/VoterSidebar";
 import UserItemCover from "../../ui/UserItemCover/UserItemCover";
+import VotersCandidateItemCover from "../../ui/VotersCandidateItemCover/VotersCandidateItemCover";
 import { bouncy } from "ldrs";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -14,10 +15,6 @@ const VotersCandidateList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { id } = useParams();
-
-  const onRemoveClicked = (removeId) => {
-    setCandidateList(candidateList.filter((item) => item.voterID !== removeId));
-  };
 
   const fetchData = async () => {
     setError(null);
@@ -58,13 +55,7 @@ const VotersCandidateList = () => {
 
   if (candidateList.length > 0) {
     content = candidateList.map((item) => {
-      return (
-        <UserItemCover
-          name={item.name}
-          id={item.voterID}
-          onRemove={onRemoveClicked}
-        />
-      );
+      return <VotersCandidateItemCover name={item.name} id={item.voterID} />;
     });
   }
 

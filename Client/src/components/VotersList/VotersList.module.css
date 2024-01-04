@@ -21,7 +21,7 @@
 .contentCover {
   position: relative;
   bottom: 5%;
-  right: 15%; /* Adjusting alignment */
+  right: 20%; /* Adjusting alignment */
   flex-wrap: wrap;
   display: flex;
   height: 100%; /* Full height */
