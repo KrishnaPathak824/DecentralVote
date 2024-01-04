@@ -6,6 +6,7 @@ import axios from "axios";
 import { useState, useRef, useEffect, useContext } from "react";
 
 const ElectionPageData = (props) => {
+  console.log('totalvotes',props.totalvotes)
   return (
     <div className={styles.dataBlockCover}>
       <div className={styles.votes}>
@@ -13,8 +14,8 @@ const ElectionPageData = (props) => {
           <HowToVoteOutlinedIcon className={styles.icon} />
         </div>
         <div className={styles.dataContent}>
-          <h1>64%</h1>
-          <h2>Votes</h2>
+          <h1>{props.totalvotes}</h1>
+          <h2>Total Votes</h2>
         </div>
       </div>
       <div className={styles.voters}>

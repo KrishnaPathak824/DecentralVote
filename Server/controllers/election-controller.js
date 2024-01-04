@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt')
 //register seller
 const electioncreation= async (req, res) => {
     // Helper function to generate a random 7-letter alphanumeric word
-    User = req.user
+   const  User = req.user
     console.log('user',User)
     try {
      

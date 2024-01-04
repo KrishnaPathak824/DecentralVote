@@ -26,6 +26,7 @@ const addCandidate = async (req, res, next) => {
 
         // Add the voterId to the candidates array
         election.candidates.push(voterID);
+        console.log('successfully updated')
 
         // Save the updated election with the new voterId in the voters array
         await election.save();

@@ -21,6 +21,8 @@ const VotersResults = (props) => {
   const [candidate, setCandidate] = useState();
   const [voteresult, setVoteresult] = useState([]);
   let voterIDs = [];
+  const [totalvotes,setTotalvotes] = useState()
+
 
   const fetchData = async () => {
     setError(null);
@@ -71,7 +73,16 @@ const VotersResults = (props) => {
         candidateId: candidate[0],
         votes: utils.formatUnits(candidate[1], 0), // Adjust the decimals as needed
       }));
-      setVoteresult(formattedVotes);
+      setVoteresult(formattedVotes)
+  
+      const totalVotes = formattedVotes.reduce((accumulator, currentItem) => {
+        // Convert 'votes' to a number and add to the accumulator
+        const votes = parseInt(currentItem.votes, 10) || 0; // Use 0 if 'votes' is not a valid number
+        return accumulator + votes;
+      }, 0);
+      
+      console.log('Total Votes:', totalVotes);
+      setTotalvotes(totalVotes)
     } catch (error) {
       console.log("error", error);
     }
@@ -145,7 +156,7 @@ const VotersResults = (props) => {
           </div>
           <div className={styles.pageContentRight}>
             <div className={styles.infoBlocks}>
-              <ElectionPageData num={numbers} />
+              <ElectionPageData num={numbers} totalvotes = {totalvotes}/>
             </div>
           </div>
         </div>
